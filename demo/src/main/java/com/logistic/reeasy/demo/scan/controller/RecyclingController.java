@@ -18,25 +18,24 @@ public class RecyclingController {
   private final RecyclingService recyclingService;
 
   public RecyclingController(
-    RecyclingService recyclingService
-  ){
+      RecyclingService recyclingService) {
     this.recyclingService = recyclingService;
   }
 
-    @GetMapping("/status")
-    public String getRecyclingStatus() {
-        return "Recycling service is running.";
-    }
+  @GetMapping("/status")
+  public String getRecyclingStatus() {
+    return "Recycling service is running.";
+  }
 
-    @PostMapping("/scan")
-    public ResponseEntity<ScanModel> scanImage(
-        @RequestBody RequestScanDto request
-    ){
-      try {
-        ScanModel result = recyclingService.scanImage(request.getImage(), request.getUserId());
-        return ResponseEntity.ok(result);
-      } catch (Exception e) {
-        return ResponseEntity.status(500).build();
-      }
+  @PostMapping("/scan")
+  public ResponseEntity<ScanModel> scanImage(
+      @RequestBody RequestScanDto request) {
+    try {
+      ScanModel result = recyclingService.scanImage(request.getImage(), request.getUserId());
+      return ResponseEntity.ok(result);
+    } catch (Exception e) {
+
+      return ResponseEntity.status(500).build();
     }
+  }
 }
