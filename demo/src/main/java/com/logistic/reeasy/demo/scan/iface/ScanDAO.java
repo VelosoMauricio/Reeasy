@@ -1,5 +1,6 @@
-package com.logistic.reeasy.demo.Scan.iface;
-import com.logistic.reeasy.demo.Scan.models.ScanModel;
+package com.logistic.reeasy.demo.scan.iface;
+
+import com.logistic.reeasy.demo.scan.models.ScanModel;
 
 public interface ScanDAO {
     public void findById(Long id);

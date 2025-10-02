@@ -1,4 +1,4 @@
-package com.logistic.reeasy.demo.Scan.models;
+package com.logistic.reeasy.demo.scan.models;
 
 public enum BottleType {
     PET1,

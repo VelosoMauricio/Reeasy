@@ -1,11 +1,9 @@
-package com.logistic.reeasy.demo.Scan.models;
+package com.logistic.reeasy.demo.scan.models;
 
 import java.time.LocalDate;
 import java.util.List;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -14,9 +12,6 @@ import lombok.Data;
 public class ScanModel {
     private LocalDate date;
     private String image;
-    
-    @Id()
-    @ManyToOne
     private Long userId; 
     private List<ScanBottleDetail> data; 
 }
