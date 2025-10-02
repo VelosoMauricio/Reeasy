@@ -1,0 +1,16 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: reeasy-db-dev
+    environment:
+      MYSQL_ROOT_PASSWORD: ${root_password}
+      MYSQL_DATABASE: ${name}
+      MYSQL_USER: ${user}
+      MYSQL_PASSWORD: ${password}
+    ports:
+      - "3307:3307"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
