@@ -104,6 +104,7 @@ public class ImageAnalyzerService {
             return null;
         } catch (Exception e) {
             // System.err.println("Error al analizar la imagen: " + e.getMessage());
+            System.out.println(" nt gigante");
             // return null;
             throw new RuntimeException("Error al analizar la imagen", e);
         }

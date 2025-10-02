@@ -34,6 +34,7 @@ public class RecyclingController {
       ScanModel result = recyclingService.scanImage(request.getImage(), request.getUserId());
       return ResponseEntity.ok(result);
     } catch (Exception e) {
+
       return ResponseEntity.status(500).build();
     }
   }

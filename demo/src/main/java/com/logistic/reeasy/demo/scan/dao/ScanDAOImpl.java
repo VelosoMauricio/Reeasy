@@ -6,7 +6,7 @@ import com.logistic.reeasy.demo.scan.iface.ScanDAO;
 import com.logistic.reeasy.demo.scan.models.ScanModel;
 
 public class ScanDAOImpl implements ScanDAO {
-    
+
     private final Sql2o sql2o;
 
     public ScanDAOImpl(Sql2o sql2o) {
@@ -23,16 +23,16 @@ public class ScanDAOImpl implements ScanDAO {
 
             scanModel.getData().forEach(bottleTypeData -> {
                 query.addParameter("userId", scanModel.getUserId())
-                .addParameter("bottleId", bottleTypeData.getType().getId())
-                .addParameter("amount", bottleTypeData.getAmount())
-                .addParameter("image", scanModel.getImage())
-                .addParameter("timestamp", new java.sql.Timestamp(System.currentTimeMillis()))
-                .addToBatch(); 
+                        .addParameter("bottleId", bottleTypeData.getType().getId())
+                        .addParameter("amount", bottleTypeData.getAmount())
+                        .addParameter("image", scanModel.getImage())
+                        .addParameter("timestamp", new java.sql.Timestamp(System.currentTimeMillis()))
+                        .addToBatch();
             });
 
-            query.executeBatch(); 
-        }
-        catch (Exception e) {
+            query.executeBatch();
+        } catch (Exception e) {
+            System.err.println("Error al insertar el escaneo: " + e.getMessage());
             throw new RuntimeException("Error al insertar", e);
         }
 
