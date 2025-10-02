@@ -1,11 +1,9 @@
 package com.logistic.reeasy.demo.scan.dao;
 
-import java.sql.Connection;
+import org.sql2o.Sql2o;
 
 import com.logistic.reeasy.demo.scan.iface.ScanDAO;
 import com.logistic.reeasy.demo.scan.models.ScanModel;
-
-import org.sql2o.Sql2o;
 
 public class ScanDAOImpl implements ScanDAO {
     
@@ -15,27 +13,28 @@ public class ScanDAOImpl implements ScanDAO {
         this.sql2o = sql2o;
     }
 
-    //Aqui creamos la base de datos ☆*: .｡. o(≧▽≦)o .｡.:*☆
     @Override
     public void add(ScanModel scanModel) {
 
-        String sql = "INSERT INTO scan (user_id, bottle_id, amount, image, timestamp) VALUES (:userId, :bottleId, :amount, :image, :timestamp)";
+        String sql = "INSERT INTO Scans (user_id, bottle_id, amount, image, timestamp) VALUES (:userId, :bottleId, :amount, :image, :timestamp)";
 
-        scanModel.getData().forEach(bottleTypeData -> {
-        
-            try(var con = sql2o.open()) {
-                con.createQuery(sql)
-                   .addParameter("userId", scanModel.getUserId())
-                   .addParameter("bottleId", bottleTypeData.getType())
-                   .addParameter("amount", bottleTypeData.getAmount())
-                   .addParameter("image", scanModel.getImage())
-                   .addParameter("timestamp", new java.sql.Timestamp(System.currentTimeMillis()))
-                   .executeUpdate(); 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        
-        });
+        try (var con = sql2o.open()) {
+            var query = con.createQuery(sql);
+
+            scanModel.getData().forEach(bottleTypeData -> {
+                query.addParameter("userId", scanModel.getUserId())
+                .addParameter("bottleId", bottleTypeData.getType().getId())
+                .addParameter("amount", bottleTypeData.getAmount())
+                .addParameter("image", scanModel.getImage())
+                .addParameter("timestamp", new java.sql.Timestamp(System.currentTimeMillis()))
+                .addToBatch(); 
+            });
+
+            query.executeBatch(); 
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Error al insertar", e);
+        }
 
     }
 

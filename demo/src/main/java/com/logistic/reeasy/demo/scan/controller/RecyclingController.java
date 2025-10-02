@@ -4,13 +4,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.logistic.reeasy.demo.scan.models.RequestScanDto;
 import com.logistic.reeasy.demo.scan.models.ScanModel;
 import com.logistic.reeasy.demo.scan.service.RecyclingService;
 
-@RestController("/recycling")
+@RestController
+@RequestMapping("/recycling")
 public class RecyclingController {
 
   private final RecyclingService recyclingService;
@@ -21,13 +23,12 @@ public class RecyclingController {
     this.recyclingService = recyclingService;
   }
 
-
-    @GetMapping("/recycling/status")
+    @GetMapping("/status")
     public String getRecyclingStatus() {
         return "Recycling service is running.";
     }
 
-    @PostMapping("/scanImage")
+    @PostMapping("/scan")
     public ResponseEntity<ScanModel> scanImage(
         @RequestBody RequestScanDto request
     ){
