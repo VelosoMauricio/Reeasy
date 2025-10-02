@@ -89,19 +89,13 @@ public class ImageAnalyzerService {
 
             System.out.println("JSON limpio de Gemini: " + jsonResponse); // ¡Útil para debug!
 
-            System.out.println("SENIOR BANQUERO DEVUELVAME EL DINERO");
-
             // Parsear a ScanModel
             ScanResultWrapper wrapper = objectMapper.readValue(jsonResponse, ScanResultWrapper.class);
-
-            System.out.println("SENIOR BANQUERO DEVUELVAME EL DINERO");
 
             // Extraer la lista de detalles del wrapper
             List<ScanBottleDetail> detailsList = wrapper.getDetails();
 
-            System.out.println("SENIOR BANQUERO DEVUELVAME EL DINERO");
             System.out.println("datailists" + detailsList);
-            System.out.println("datailistssadasd");
 
             detailsList.forEach(detail -> {
                 System.out.println("Tipo: " + detail.getType() + ", Cantidad: " + detail.getAmount());

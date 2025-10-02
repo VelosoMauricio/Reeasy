@@ -22,7 +22,7 @@ public class RecyclingController {
     this.recyclingService = recyclingService;
   }
 
-  @GetMapping("/recycling/status")
+  @GetMapping("/status")
   public String getRecyclingStatus() {
     return "Recycling service is running.";
   }
@@ -34,7 +34,7 @@ public class RecyclingController {
       ScanModel result = recyclingService.scanImage(request.getImage(), request.getUserId());
       return ResponseEntity.ok(result);
     } catch (Exception e) {
-      return ResponseEntity.status(501).build();
+      return ResponseEntity.status(500).build();
     }
   }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.logistic.reeasy.demo.scan.iface.ScanDAO;
 import com.logistic.reeasy.demo.scan.models.BottleType;
 import com.logistic.reeasy.demo.scan.models.ScanBottleDetail;
 import com.logistic.reeasy.demo.scan.models.ScanModel;
@@ -13,10 +14,13 @@ import com.logistic.reeasy.demo.scan.models.ScanModel;
 public class RecyclingService {
 
   private final ImageAnalyzerService imageAnalyzerService;
+  private final ScanDAO scanDAOImpl;
 
   public RecyclingService(
-      ImageAnalyzerService imageAnalyzerService) {
+      ImageAnalyzerService imageAnalyzerService,
+      ScanDAO scanDAOImpl) {
     this.imageAnalyzerService = imageAnalyzerService;
+    this.scanDAOImpl = scanDAOImpl;
   }
 
   public ScanModel scanImage(String image, Long id) {
@@ -25,6 +29,7 @@ public class RecyclingService {
 
     imageAnalyzerService.scanImage(image, id);
 
+    // de momento usamos example
     ScanModel example = new ScanModel(
         LocalDate.now(),
         image,
@@ -34,6 +39,8 @@ public class RecyclingService {
             new ScanBottleDetail(3, BottleType.HDPE)) // le pasamos la lista de botellas o llamamos varias veces al
                                                       // scan?
     );
+
+    scanDAOImpl.add(example);
 
     return example;
   }
