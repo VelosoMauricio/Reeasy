@@ -8,8 +8,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ScanModel {
+    private Long userId;
     private LocalDate date;
     private byte[] image;
-    private Long userId;
     private List<ScanBottleDetail> data;
 }
