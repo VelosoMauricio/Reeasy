@@ -9,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class ScanModel {
     private LocalDate date;
-    private String image;
+    private byte[] image;
     private Long userId;
     private List<ScanBottleDetail> data;
 }
