@@ -63,6 +63,7 @@ public class ImageAnalyzerService {
             handleBadRequest(e);
             return null; // Nunca llega aca porque handleBadRequest lanza excepcion
         } catch (Exception e) {
+            e.printStackTrace();
             throw new GoogleApiServiceException("It happend an inespered error", e);
         }
     }
@@ -105,9 +106,9 @@ public class ImageAnalyzerService {
                     Analiza la imagen y devuelve SOLO un JSON con este formato EXACTO:
                     {
                     "details": [
-                        {"type": "PET1", "amount": 0},
-                        {"type": "HDPE", "amount": 0},
-                        {"type": "LDPE", "amount": 0}
+                        {"type": "PET", "amount": 0},
+                        {"type": "PEAD", "amount": 0},
+                        {"type": "PEBD", "amount": 0}
                     ]
                     }
                     La clave es que la IA debe reemplazar los ceros con la cantidad real de cada tipo de plástico que aparezca en la imagen.

@@ -1,9 +1,9 @@
 package com.logistic.reeasy.demo.scan.models;
 
 public enum BottleType {
-    PET1(1),
-    HDPE(2),
-    PP(3);
+    PEAD(1),
+    PEBD(2),
+    PET(3);
 
     // --- Código a añadir ---
     private final int id;

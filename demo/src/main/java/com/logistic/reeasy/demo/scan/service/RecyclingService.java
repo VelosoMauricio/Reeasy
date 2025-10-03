@@ -42,9 +42,9 @@ public class RecyclingService {
     byte[] imageBytes = pureBase64.getBytes();
 
     ScanModel scanModel = new ScanModel(
+        1L,
         null,
         imageBytes,
-        id,
         detailsBottlesList
     );
 
@@ -61,7 +61,7 @@ public class RecyclingService {
     catch(Exception e){
 
       // TODO: Manejar errores SQL
-      
+
       throw new RuntimeException("It happened an error on save scan", e);
     }
   }
