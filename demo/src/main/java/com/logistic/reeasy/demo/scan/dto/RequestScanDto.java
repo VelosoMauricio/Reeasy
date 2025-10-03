@@ -1,4 +1,4 @@
-package com.logistic.reeasy.demo.scan.models;
+package com.logistic.reeasy.demo.scan.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

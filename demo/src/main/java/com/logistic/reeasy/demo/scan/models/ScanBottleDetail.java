@@ -7,6 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class ScanBottleDetail {
     private int amount;
-
     private BottleType type;
 }

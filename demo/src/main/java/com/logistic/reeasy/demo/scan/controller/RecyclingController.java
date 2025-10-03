@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.logistic.reeasy.demo.scan.models.RequestScanDto;
-import com.logistic.reeasy.demo.scan.models.ScanModel;
+import com.logistic.reeasy.demo.scan.dto.RequestScanDto;
+import com.logistic.reeasy.demo.scan.dto.ScanDto;
 import com.logistic.reeasy.demo.scan.service.RecyclingService;
 
 @RestController
@@ -28,13 +28,12 @@ public class RecyclingController {
   }
 
   @PostMapping("/scan")
-  public ResponseEntity<ScanModel> scanImage(
+  public ResponseEntity<ScanDto> scanImage(
       @RequestBody RequestScanDto request) {
     try {
-      ScanModel result = recyclingService.scanImage(request.getImage(), request.getUserId());
+      ScanDto result = recyclingService.scanImage(request.getImage(), request.getUserId());
       return ResponseEntity.ok(result);
     } catch (Exception e) {
-
       return ResponseEntity.status(500).build();
     }
   }
