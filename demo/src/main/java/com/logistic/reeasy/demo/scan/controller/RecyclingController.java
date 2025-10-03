@@ -28,13 +28,8 @@ public class RecyclingController {
   }
 
   @PostMapping("/scan")
-  public ResponseEntity<ScanDto> scanImage(
-      @RequestBody RequestScanDto request) {
-    try {
+  public ResponseEntity<ScanDto> scanImage(@RequestBody RequestScanDto request) {
       ScanDto result = recyclingService.scanImage(request.getImage(), request.getUserId());
       return ResponseEntity.ok(result);
-    } catch (Exception e) {
-      return ResponseEntity.status(500).build();
-    }
   }
 }

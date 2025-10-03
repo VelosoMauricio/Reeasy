@@ -3,10 +3,13 @@ package com.logistic.reeasy.demo.scan.service;
 import java.util.List;
 import java.util.Map;
 
+import com.logistic.reeasy.demo.common.exception.custom.GoogleApiServiceException;
+import com.logistic.reeasy.demo.common.exception.custom.InvalidApiKeyException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.logistic.reeasy.demo.scan.models.ScanBottleDetail;
@@ -26,7 +29,7 @@ public class ImageAnalyzerService {
         this.objectMapper = objectMapper;
     }
 
-    public List<ScanBottleDetail> scanImage(String base64Image, Long userId) {
+    public List<ScanBottleDetail> scanImage(String base64Image) {
         try {
 
             String prompt = """
@@ -60,7 +63,7 @@ public class ImageAnalyzerService {
             // Convertimos a JSON String seguro
             String body = objectMapper.writeValueAsString(bodyMap);
             // The working URL based on your successful curl request
-            String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyAoYk2ZefMwsr_kDx90NG3ISOdx55TKMSY";
+            String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?";
             // Configurar headers para JSON
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
@@ -94,8 +97,22 @@ public class ImageAnalyzerService {
             List<ScanBottleDetail> detailsList = wrapper.getDetails();
 
             return detailsList;
-        } catch (Exception e) {
-            throw new RuntimeException("Error al analizar la imagen", e);
+        } catch (HttpClientErrorException.BadRequest e) {
+
+            String errorBody = e.getResponseBodyAsString();
+            e.printStackTrace();
+            System.out.println("Error Body: " + errorBody);
+
+
+            if (errorBody != null && errorBody.contains("API_KEY_INVALID")) {
+                throw new InvalidApiKeyException("INVALID API KEY");
+            } else {
+                throw new GoogleApiServiceException("It happend an error", e);
+            }
+
+        }
+        catch (Exception e){
+            throw new GoogleApiServiceException("It happend an inespered error", e);
         }
     }
 

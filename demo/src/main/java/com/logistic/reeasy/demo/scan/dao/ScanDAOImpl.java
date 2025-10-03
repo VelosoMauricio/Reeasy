@@ -1,9 +1,14 @@
 package com.logistic.reeasy.demo.scan.dao;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 import org.sql2o.Sql2o;
 
 import com.logistic.reeasy.demo.scan.iface.ScanDAO;
 import com.logistic.reeasy.demo.scan.models.ScanModel;
+/* los metodos de la api de reflexion */
+import java.lang.reflect.Field;
 
 public class ScanDAOImpl implements ScanDAO {
 
@@ -34,6 +39,33 @@ public class ScanDAOImpl implements ScanDAO {
         }
 
         return scanModel;
+    }
+
+    /* usando reflexion para la bd */
+    public <T> void insert(T entity, String tableName) {
+        Class<?> clazz = entity.getClass();
+        Field[] fields = clazz.getDeclaredFields();
+
+        // Generar columnas y placeholders dinámicos
+        String columns = Arrays.stream(fields)
+                .map(Field::getName)
+                .collect(Collectors.joining(", "));
+        String values = Arrays.stream(fields)
+                .map(f -> ":" + f.getName())
+                .collect(Collectors.joining(", "));
+
+        String sql = "INSERT INTO " + tableName + " (" + columns + ") VALUES (" + values + ")";
+
+        try (var con = sql2o.open()) {
+            var query = con.createQuery(sql);
+            for (Field field : fields) {
+                field.setAccessible(true); // para acceder a campos privados
+                query.addParameter(field.getName(), field.get(entity));
+            }
+            query.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
