@@ -32,7 +32,6 @@ public class ScanDAOImpl implements ScanDAO {
 
             query.executeBatch();
         } catch (Exception e) {
-            System.err.println("Error al insertar el escaneo: " + e.getMessage());
             throw new RuntimeException("Error al insertar", e);
         }
 

@@ -80,14 +80,15 @@ public class ImageAnalyzerService {
 
             String jsonResponse = candidateNode.asString();
 
-            // Limpiar el JSON de posibles backticks
+            // para limpiarkle los ticks al json... nashe
 
             jsonResponse = jsonResponse
                     .replaceAll("```json", "")
                     .replaceAll("```", "")
                     .trim();
 
-            System.out.println("JSON limpio de Gemini: " + jsonResponse); // ¡Útil para debug!
+            // debug para ver si salio todo bien
+            System.out.println("JSON limpio de Gemini: " + jsonResponse);
 
             // Parsear a ScanModel
             ScanResultWrapper wrapper = objectMapper.readValue(jsonResponse, ScanResultWrapper.class);
@@ -103,9 +104,6 @@ public class ImageAnalyzerService {
 
             return null;
         } catch (Exception e) {
-            // System.err.println("Error al analizar la imagen: " + e.getMessage());
-            System.out.println(" nt gigante");
-            // return null;
             throw new RuntimeException("Error al analizar la imagen", e);
         }
     }
