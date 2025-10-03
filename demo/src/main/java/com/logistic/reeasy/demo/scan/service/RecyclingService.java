@@ -27,15 +27,23 @@ public class RecyclingService {
 
   public ScanDto scanImage(String image, Long id) {
 
-    List<ScanBottleDetail> detailsBottlesList = imageAnalyzerService.scanImage(image, id);
+    List<ScanBottleDetail> detailsBottlesList = imageAnalyzerService.scanImage(image);
 
     if(detailsBottlesList == null || detailsBottlesList.isEmpty()) {
       throw new PlasticBottleNotDetected("The image does not contain recyclable plastic bottles");
     }
 
+    String pureBase64 = image;
+    
+    if (pureBase64.contains(",")) {
+        pureBase64 = pureBase64.split(",")[1];
+    }
+
+    byte[] imageBytes = pureBase64.getBytes();
+
     ScanModel scanModel = new ScanModel(
         null,
-        image,
+        imageBytes,
         id,
         detailsBottlesList
     );
