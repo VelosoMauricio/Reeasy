@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.logistic.reeasy.demo.common.exception.custom.GoogleApiServiceException;
 import com.logistic.reeasy.demo.common.exception.custom.InvalidApiKeyException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -23,11 +24,19 @@ public class ImageAnalyzerService {
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
-    private static final String GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?";
+    private final String GEMINI_URL;
+    private final String GEMINI_API_KEY;
 
-    public ImageAnalyzerService(ObjectMapper objectMapper) {
+    public ImageAnalyzerService(
+            ObjectMapper objectMapper,
+            @Value("${gemini.api.url}") String geminiUrl,
+            @Value("${gemini.api.key}") String geminiApiKey
+    ) {
         this.restTemplate = new RestTemplate();
         this.objectMapper = objectMapper;
+
+        this.GEMINI_URL = geminiUrl;
+        this.GEMINI_API_KEY = geminiApiKey;
     }
 
     public List<ScanBottleDetail> scanImage(String base64Image) {
@@ -86,7 +95,9 @@ public class ImageAnalyzerService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> request = new HttpEntity<>(body, headers);
         // Le hago un POST hard a la api de Gemini
-        return restTemplate.postForObject(GEMINI_URL, request, JsonNode.class);
+
+        System.out.println(GEMINI_URL + "?key=" + GEMINI_API_KEY);
+        return restTemplate.postForObject(GEMINI_URL + "?key=" + GEMINI_API_KEY, request, JsonNode.class);
     }
 
     private String buildPrompt() {
@@ -122,20 +133,6 @@ public class ImageAnalyzerService {
         Map<String, Object> bodyMap = Map.of("contents", List.of(userContent));
 
         return objectMapper.writeValueAsString(bodyMap); // Lo pasamos a JSON
-
-        /*
-         * {
-         * "contents": [
-         * {
-         * "role": "user",
-         * "parts": [
-         * { "text": "Analiza la imagen..." },
-         * { "inline_data": { "mime_type": "image/jpeg", "data": "....BASE64...." } }
-         * ]
-         * }
-         * ]
-         * }
-         */
     }
 
     private void handleBadRequest(HttpClientErrorException.BadRequest e) {
