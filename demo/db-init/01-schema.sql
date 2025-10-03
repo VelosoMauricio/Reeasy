@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `Coupons` (
   `description` VARCHAR(45) NOT NULL,
   `amount` INT NOT NULL,
   `link` VARCHAR(45) NULL,
-  `image` BLOB NOT NULL,
+  `image` LONGBLOB NOT NULL,
   `Enterprise_cuit` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`coupon_id`, `Enterprise_cuit`),
   INDEX `fk_Coupons_Enterprise1_idx` (`Enterprise_cuit` ASC) VISIBLE,
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `Scans` (
   `user_id` INT NOT NULL,
   `bottle_id` INT NOT NULL,
   `amount` INT NULL,
-  `image` BLOB NULL,
+  `image` LONGBLOB NULL,
   `timestamp` TIMESTAMP NULL,
   PRIMARY KEY (`user_id`, `bottle_id`),
   INDEX `fk_Users_has_Bottles_Bottles1_idx` (`bottle_id` ASC) VISIBLE,
@@ -150,3 +150,47 @@ CREATE TABLE IF NOT EXISTS `RedeemCoupons` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+
+
+
+-- INSERTS DE PRUEBA
+
+INSERT INTO Users (user_id, name, lastname, email, addres)
+VALUES
+(1, 'Juan', 'Pérez', 'juan.perez@example.com', 'Calle Falsa 123'),
+(2, 'Ana', 'Gómez', 'ana.gomez@example.com', 'Av. Siempreviva 742'),
+(3, 'Luis', 'Martínez', 'luis.martinez@example.com', 'San Martín 456');
+
+-- Roles
+INSERT INTO Roles (rol_id, rol_name)
+VALUES
+(1, 'Admin'),
+(2, 'User'),
+(3, 'Collector');
+
+-- UsersDetails
+INSERT INTO UsersDetails (user_id, rol_id)
+VALUES
+(1, 1), -- Juan es Admin
+(2, 2), -- Ana es User
+(3, 2); -- Luis es User
+
+-- Enterprise
+INSERT INTO Enterprise (name, cuit)
+VALUES
+('EcoPlast SA', '30-12345678-9'),
+('GreenRecycle SRL', '30-98765432-1');
+
+-- Bottles
+INSERT INTO Bottles (bottle_id, plastic_type)
+VALUES
+(1, 'PEAD'),
+(2, 'PEBD'),
+(3, 'PET');
+
+-- Coupons
+INSERT INTO Coupons (coupon_id, expiration_date, price, description, amount, link, image, Enterprise_cuit)
+VALUES
+(1, '2025-12-31', 100, 'Descuento en supermercado', 50, 'http://example.com/coupon1', 0x1234, '30-12345678-9'),
+(2, '2025-11-30', 200, '2x1 en cine', 30, 'http://example.com/coupon2', 0x5678, '30-98765432-1');
