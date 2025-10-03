@@ -14,7 +14,7 @@ public class ScanDAOImpl implements ScanDAO {
     }
 
     @Override
-    public void add(ScanModel scanModel) {
+    public ScanModel save(ScanModel scanModel) {
 
         String sql = "INSERT INTO Scans (user_id, bottle_id, amount, image, timestamp) VALUES (:userId, :bottleId, :amount, :image, :timestamp)";
 
@@ -31,15 +31,13 @@ public class ScanDAOImpl implements ScanDAO {
             });
 
             query.executeBatch();
-        } catch (Exception e) {
-            System.err.println("Error al insertar el escaneo: " + e.getMessage());
-            throw new RuntimeException("Error al insertar", e);
-        }
+        } 
 
+        return scanModel;
     }
 
     @Override
-    public void findById(Long id) {
+    public ScanModel findById(Long id) {
         // TODO: Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }

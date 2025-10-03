@@ -1,12 +1,13 @@
 package com.logistic.reeasy.demo.scan.service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.logistic.reeasy.demo.common.exception.custom.PlasticBottleNotDetected;
+import com.logistic.reeasy.demo.scan.dto.ScanBottleDetailDto;
+import com.logistic.reeasy.demo.scan.dto.ScanDto;
 import com.logistic.reeasy.demo.scan.iface.ScanDAO;
-import com.logistic.reeasy.demo.scan.models.BottleType;
 import com.logistic.reeasy.demo.scan.models.ScanBottleDetail;
 import com.logistic.reeasy.demo.scan.models.ScanModel;
 
@@ -24,24 +25,36 @@ public class RecyclingService {
     this.scanDAOImpl = scanDAOImpl;
   }
 
-  public ScanModel scanImage(String image, Long id) {
+  public ScanDto scanImage(String image, Long id) {
 
-    // llamada al servicio de analisis de imagen
+    List<ScanBottleDetail> detailsBottlesList = imageAnalyzerService.scanImage(image, id);
 
-    imageAnalyzerService.scanImage(image, id);
+    if(detailsBottlesList == null || detailsBottlesList.isEmpty()) {
+      throw new PlasticBottleNotDetected("The image does not contain recyclable plastic bottles");
+    }
 
-    // de momento usamos example
-    ScanModel example = new ScanModel(
-        LocalDate.now(),
+    ScanModel scanModel = new ScanModel(
+        null,
         image,
         id,
-        List.of(
-            new ScanBottleDetail(5, BottleType.PET1),
-            new ScanBottleDetail(3, BottleType.HDPE))
+        detailsBottlesList
     );
 
-    scanDAOImpl.add(example);
+    try{
+      scanModel = scanDAOImpl.save(scanModel);
 
-    return example;
+      List<ScanBottleDetailDto> bottleDetails = scanModel
+        .getData().stream()
+        .map(detail -> new ScanBottleDetailDto(detail.getType(), detail.getAmount()))
+        .toList();
+
+      return new ScanDto(scanModel.getDate(), bottleDetails);
+    }
+    catch(Exception e){
+
+      // TODO: Manejar errores SQL
+      
+      throw new RuntimeException("It happened an error on save scan", e);
+    }
   }
 }

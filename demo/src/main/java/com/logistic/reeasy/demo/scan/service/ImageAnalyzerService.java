@@ -1,22 +1,19 @@
 package com.logistic.reeasy.demo.scan.service;
 
-import org.springframework.stereotype.Service;
-
-import com.logistic.reeasy.demo.scan.models.ScanBottleDetail;
-import com.logistic.reeasy.demo.scan.models.ScanModel;
-import com.logistic.reeasy.demo.scan.models.ScanResultWrapper;
-
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
-
-import org.springframework.web.client.RestTemplate;
-
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.logistic.reeasy.demo.scan.models.ScanBottleDetail;
+import com.logistic.reeasy.demo.scan.models.ScanResultWrapper;
+
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 @Service
 public class ImageAnalyzerService {
@@ -29,7 +26,7 @@ public class ImageAnalyzerService {
         this.objectMapper = objectMapper;
     }
 
-    public ScanModel scanImage(String base64Image, Long userId) {
+    public List<ScanBottleDetail> scanImage(String base64Image, Long userId) {
         try {
 
             String prompt = """
@@ -95,13 +92,7 @@ public class ImageAnalyzerService {
             // Extraer la lista de detalles del wrapper
             List<ScanBottleDetail> detailsList = wrapper.getDetails();
 
-            System.out.println("datailists" + detailsList);
-
-            detailsList.forEach(detail -> {
-                System.out.println("Tipo: " + detail.getType() + ", Cantidad: " + detail.getAmount());
-            });
-
-            return null;
+            return detailsList;
         } catch (Exception e) {
             // System.err.println("Error al analizar la imagen: " + e.getMessage());
             System.out.println(" nt gigante");
