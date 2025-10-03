@@ -31,13 +31,7 @@ public class ScanDAOImpl implements ScanDAO {
             });
 
             query.executeBatch();
-<<<<<<< HEAD
-        } catch (Exception e) {
-            throw new RuntimeException("Error al insertar", e);
         }
-=======
-        } 
->>>>>>> 6b5ed568d543fd5e91cb2f7f09da8a17b59d6c6c
 
         return scanModel;
     }
