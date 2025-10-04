@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Toaster, toast } from 'sonner'
 
 // URL base para el backend (se recomienda usar un proxy en un entorno de producción)
-const API_BASE_URL = "http://localhost:8090/recycling"; 
+const API_BASE_URL = "http://localhost:8090";
 
 // --- Componentes Reutilizables ---
 
@@ -88,7 +88,7 @@ const AddCoupon = ({ userId }) => {
     description: '',
     link: '',
     image: '', // URL de la imagen del cupón
-    Enterprise_cuit: '',
+    enterprise_cuit: '',
   });
   const [loading, setLoading] = useState(false);
   const [responseMessage, setResponseMessage] = useState(null);
@@ -126,10 +126,10 @@ const AddCoupon = ({ userId }) => {
         description: formData.description,
         link: formData.link || '#',
         image: formData.image || 'https://placehold.co/100x100/A8E6CF/00A651?text=CUPON',
-        Enterprise_cuit: formData.Enterprise_cuit ? BigInt(formData.Enterprise_cuit).toString() : null,
+        enterprise_cuit: formData.enterprise_cuit,
       };
 
-      const response = await fetch(`${API_BASE_URL}/admin/coupons`, {
+      const response = await fetch(`${API_BASE_URL}/admin/coupon`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         // Aquí se envía el payload al backend
@@ -153,7 +153,7 @@ const AddCoupon = ({ userId }) => {
         description: '',
         link: '',
         image: '',
-        Enterprise_cuit: '',
+        enterprise_cuit: '',
       });
 
     } catch (err) {
@@ -172,7 +172,7 @@ const AddCoupon = ({ userId }) => {
     { name: 'expiration_date', label: 'Fecha de Expiración *', type: 'date', required: true, span: 1 },
     { name: 'image', label: 'URL de la Imagen', type: 'url', required: false, span: 3 },
     { name: 'link', label: 'Link de Redirección', type: 'url', required: false, span: 2 },
-    { name: 'Enterprise_cuit', label: 'CUIT de la Empresa', type: 'number', required: false, span: 3 },
+    { name: 'enterprise_cuit', label: 'CUIT de la Empresa', type: 'text', required: false, span: 3 },
     { name: 'coupon_id', label: 'ID (Opcional, si es pre-asignado)', type: 'number', required: false, span: 2 },
   ];
 
