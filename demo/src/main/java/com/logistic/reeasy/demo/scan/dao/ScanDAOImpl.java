@@ -16,6 +16,11 @@ public class ScanDAOImpl extends AbstractDAO implements ScanDAO {
     }
 
     @Override
+    public <T> T insert(T entity, String tableName) throws Exception {
+        return super.insert(entity, tableName);
+    }
+
+    @Override
     public ScanModel save(ScanModel scanModel) {
 
         String sql = "INSERT INTO Scans (user_id, bottle_id, amount, image, timestamp) VALUES (:userId, :bottleId, :amount, :image, :timestamp)";

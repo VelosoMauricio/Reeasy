@@ -14,7 +14,7 @@ public abstract class AbstractDAO {
     }
 
     /* usando reflexion para la bd */
-    public <T> void insert(T entity, String tableName) {
+    public <T> T insert(T entity, String tableName) throws Exception{
         Class<?> clazz = entity.getClass();
         Field[] fields = clazz.getDeclaredFields();
 
@@ -35,9 +35,9 @@ public abstract class AbstractDAO {
                 query.addParameter(field.getName(), field.get(entity));
             }
             query.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
+
+        return entity;
     }
 
 }

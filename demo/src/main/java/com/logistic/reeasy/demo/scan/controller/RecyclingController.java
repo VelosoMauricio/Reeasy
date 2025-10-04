@@ -19,7 +19,7 @@ public class RecyclingController {
 
   public RecyclingController(
       RecyclingService recyclingService) {
-    this.recyclingService = recyclingService;
+      this.recyclingService = recyclingService;
   }
 
   @GetMapping("/status")
