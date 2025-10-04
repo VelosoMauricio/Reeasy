@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `Coupons` (
   `coupon_id` INT NOT NULL,
   `expiration_date` DATE NOT NULL,
   `price` INT NOT NULL,
-  `description` VARCHAR(45) NOT NULL,
+  `description` VARCHAR(255) NOT NULL,
   `amount` INT NOT NULL,
   `link` VARCHAR(45) NULL,
   `image` LONGBLOB NOT NULL,
