@@ -110,8 +110,8 @@ CREATE TABLE IF NOT EXISTS `Scans` (
   `bottle_id` INT NOT NULL,
   `amount` INT NULL,
   `image` LONGBLOB NULL,
-  `timestamp` TIMESTAMP NULL,
-  PRIMARY KEY (`user_id`, `bottle_id`),
+  `timestamp` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`user_id`, `bottle_id`, `timestamp`),
   INDEX `fk_Users_has_Bottles_Bottles1_idx` (`bottle_id` ASC) VISIBLE,
   INDEX `fk_Users_has_Bottles_Users1_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `fk_Users_has_Bottles_Users1`
