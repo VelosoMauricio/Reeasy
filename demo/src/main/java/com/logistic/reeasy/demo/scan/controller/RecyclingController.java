@@ -23,8 +23,8 @@ public class RecyclingController {
   }
 
   @GetMapping("/status")
-  public String getRecyclingStatus() {
-    return "Recycling service is running.";
+  public ResponseEntity getRecyclingStatus() {
+    return ResponseEntity.ok("Recycling service is running.");
   }
 
   @PostMapping("/scan")

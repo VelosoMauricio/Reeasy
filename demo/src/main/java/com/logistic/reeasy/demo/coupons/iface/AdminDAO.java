@@ -1,7 +1,5 @@
-package com.logistic.reeasy.demo.Coupons.iface;
-
-import com.logistic.reeasy.demo.Coupons.models.CouponModel;
+package com.logistic.reeasy.demo.coupons.iface;
 
 public interface AdminDAO {
-    public CouponModel addCoupon(CouponModel coupon);
+    public <T> T insert(T entity, String tableName) throws Exception;
 }

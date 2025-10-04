@@ -1,4 +1,4 @@
-package com.logistic.reeasy.demo.scan.abs;
+package com.logistic.reeasy.demo.common.abs;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
