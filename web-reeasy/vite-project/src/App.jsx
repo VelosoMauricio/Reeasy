@@ -39,7 +39,10 @@ const NavItem = ({ icon, label, active, onClick }) => (
 
 // 3. Resultados del escaneo
 const ScanResults = ({ result }) => {
-  if (!result || !Array.isArray(result.detections)) {
+
+    console.log(result)
+
+  if (!result || !Array.isArray(result.data)) {
     return (
       <div className="mt-6">
         <h3 className="text-xl font-bold text-gray-700 border-b pb-2 mb-4">
@@ -53,7 +56,8 @@ const ScanResults = ({ result }) => {
     );
   }
 
-  const totalPoints = result.detections.reduce((sum, d) => sum + d.points, 0);
+  //const totalPoints = result.data.reduce((sum, d) => sum + d.points, 0);
+  const totalPoints = result.data.reduce((sum, d) => sum + d.amount, 0);
 
   return (
     <div className="mt-6">
@@ -63,12 +67,12 @@ const ScanResults = ({ result }) => {
           Total de Puntos: <span className="text-green-500">+{totalPoints}pts</span>
         </p>
         <div className="space-y-3">
-          {result.detections.map((d, index) => (
+          {result.data.map((d, index) => (
             <div key={index} className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
               <span className="font-semibold text-gray-700">
                 {d.count} {d.count === 1 ? 'plástico' : 'plásticos'} tipo: <strong className="text-green-700">{d.type}</strong>
               </span>
-              <span className="font-bold text-green-500"> (+{d.points}pts)</span>
+              <span className="font-bold text-green-500"> (+{d.amount}pts)</span>
             </div>
           ))}
         </div>
