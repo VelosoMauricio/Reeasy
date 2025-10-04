@@ -28,7 +28,6 @@ public class RecyclingController {
     return ResponseEntity.ok("Recycling service is running.");
   }
 
-  @CrossOrigin(origins = "http://localhost:5173")
   @PostMapping("/scan")
   public ResponseEntity<ScanDto> scanImage(@RequestBody RequestScanDto request) {
     ScanDto result = recyclingService.scanImage(request.getImage(), request.getUserId());
