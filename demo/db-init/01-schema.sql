@@ -70,7 +70,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `Coupons` ;
 
 CREATE TABLE IF NOT EXISTS `Coupons` (
-  `coupon_id` INT NOT NULL,
+  `coupon_id` INT NOT NULL AUTO_INCREMENT,
   `expiration_date` DATE NOT NULL,
   `price` INT NOT NULL,
   `description` VARCHAR(255) NOT NULL,
