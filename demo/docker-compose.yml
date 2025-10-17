@@ -15,6 +15,26 @@ services:
     
     command: --bind-address=0.0.0.0
 
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    container_name: reeasy-api-dev
+    ports: 
+      - "8090:8080"
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/${name}?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: ${user}
+      SPRING_DATASOURCE_PASSWORD: ${password}
+    
+    depends_on:
+      db: 
+       condition: service_healthy
 
 volumes:
   mysql-data:
