@@ -10,9 +10,9 @@ public class DatabaseConfig {
 
     @Bean
     public Sql2o sql2o(
-            @Value("${db.url}") String url,
-            @Value("${db.user}") String user,
-            @Value("${db.password}") String password) {
+            @Value("${spring.datasource.url}") String url,
+            @Value("${spring.datasource.username}") String user,
+            @Value("${spring.datasource.password}") String password) {
         return new Sql2o(url, user, password);
     }
 }
