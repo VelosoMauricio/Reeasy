@@ -52,9 +52,6 @@ public class ImageAnalyzerService {
             // Extraer el JSON de la respuesta
             String jsonResponse = extractJsonFromResponse(response);
 
-            // debug para ver si salio todo bien
-            System.out.println("JSON limpio de Gemini: " + jsonResponse);
-
             ScanResultWrapper wrapper = mapResponseToScanResult(jsonResponse);
 
             return wrapper.getDetails();
@@ -92,12 +89,12 @@ public class ImageAnalyzerService {
 
     private JsonNode callGeminiApi(String body) {
         HttpHeaders headers = new HttpHeaders();
+
         // Le aviso que le va a llegar un JSON
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> request = new HttpEntity<>(body, headers);
-        // Le hago un POST hard a la api de Gemini
 
-        System.out.println(GEMINI_URL + "?key=" + GEMINI_API_KEY);
+        // Le hago un POST hard a la api de Gemini
         return restTemplate.postForObject(GEMINI_URL + "?key=" + GEMINI_API_KEY, request, JsonNode.class);
     }
 

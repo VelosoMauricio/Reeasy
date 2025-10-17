@@ -3,7 +3,6 @@ package com.logistic.reeasy.demo.scan.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.sql.Blob;
 import java.sql.Timestamp;
 
 @AllArgsConstructor

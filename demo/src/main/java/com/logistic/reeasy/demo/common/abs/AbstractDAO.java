@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import org.sql2o.Sql2o;
 
-public abstract class AbstractDAO {
+public abstract class AbstractDAO implements InterfaceDAO{
 
     private final Sql2o sql2o;
 

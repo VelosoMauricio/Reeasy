@@ -1,11 +1,8 @@
 package com.logistic.reeasy.demo.scan.service;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
-import com.logistic.reeasy.demo.scan.dao.ScanDAOImpl;
 import com.logistic.reeasy.demo.scan.models.ScanTableModel;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +11,6 @@ import com.logistic.reeasy.demo.scan.dto.ScanBottleDetailDto;
 import com.logistic.reeasy.demo.scan.dto.ScanDto;
 import com.logistic.reeasy.demo.scan.iface.ScanDAO;
 import com.logistic.reeasy.demo.scan.models.ScanBottleDetail;
-import com.logistic.reeasy.demo.scan.models.ScanModel;
 
 @Service
 public class RecyclingService {
@@ -57,6 +53,7 @@ public class RecyclingService {
             }
             catch(Exception e){
                 // TODO: Manejar errores SQL
+
                 throw new RuntimeException("It happened an error on save scan", e);
             }
         });

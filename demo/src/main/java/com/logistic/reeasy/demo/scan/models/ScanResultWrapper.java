@@ -8,11 +8,9 @@ public class ScanResultWrapper {
     @JsonProperty("details")
     private List<ScanBottleDetail> details;
 
-    // Getters y Setters
     public List<ScanBottleDetail> getDetails() {
         return details;
     }
-
     public void setDetails(List<ScanBottleDetail> details) {
         this.details = details;
     }
