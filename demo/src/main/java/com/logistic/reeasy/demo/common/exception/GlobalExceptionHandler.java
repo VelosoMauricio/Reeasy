@@ -8,42 +8,27 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.logistic.reeasy.demo.common.exception.custom.PlasticBottleNotDetected;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-  @ExceptionHandler(PlasticBottleNotDetected.class)
-  public ResponseEntity<ErrorResponse> handlePlasticBottleNotDetected(PlasticBottleNotDetected ex) {
+    @ExceptionHandler(BaseApiException.class)
+    public ResponseEntity<ErrorResponse> handleBaseApiException(BaseApiException ex) {
 
-      ErrorResponse errorDetails = new ErrorResponse(
-            HttpStatus.BAD_REQUEST.value(),
-            "Plastic Bottle Not Detected",
-            ex.getMessage()
-    );
-    
-    return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
-  }
+        ResponseStatus statusAnnotation = ex.getClass().getAnnotation(ResponseStatus.class);
 
-    @ExceptionHandler(InvalidApiKeyException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidApiKey(InvalidApiKeyException ex) {
+        HttpStatus status = statusAnnotation != null
+                ? statusAnnotation.value()
+                : HttpStatus.INTERNAL_SERVER_ERROR;
 
-        ErrorResponse errorDetails = new ErrorResponse(
-                HttpStatus.SERVICE_UNAVAILABLE.value(), // 503
-                "Invalid API KEY",
+        ErrorResponse body = new ErrorResponse(
+                status.value(),
+                ex.getErrorCode(),
                 ex.getMessage()
         );
 
-        return new ResponseEntity<>(errorDetails, HttpStatus.SERVICE_UNAVAILABLE);
-    }
-
-    @ExceptionHandler(GoogleApiServiceException.class)
-    public ResponseEntity<ErrorResponse> handleGoogleApiServiceException(GoogleApiServiceException ex) {
-        ErrorResponse errorDetails = new ErrorResponse(
-                HttpStatus.SERVICE_UNAVAILABLE.value(),
-                "It happend an error",
-                ex.getMessage()
-        );
-        return new ResponseEntity<>(errorDetails, HttpStatus.SERVICE_UNAVAILABLE);
+        return new ResponseEntity<>(body, status);
     }
 }
