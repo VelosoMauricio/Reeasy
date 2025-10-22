@@ -1,23 +1,20 @@
 package com.logistic.reeasy.demo.coupons.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.logistic.reeasy.demo.coupons.dto.CouponDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.logistic.reeasy.demo.coupons.models.CouponModel;
-import com.logistic.reeasy.demo.coupons.service.AdminService;
+import com.logistic.reeasy.demo.coupons.service.CouponService;
 
 @RestController
 @RequestMapping("/admin")
-public class AdminController {
-    private final AdminService adminService;
+public class CouponController {
+    private final CouponService couponService;
 
-    public AdminController(AdminService adminService) {
-        this.adminService = adminService;
+    public CouponController(CouponService couponService) {
+        this.couponService = couponService;
     }
 
     @GetMapping("/status")
@@ -28,7 +25,7 @@ public class AdminController {
     @PostMapping("/coupon")
     //@PreAuthorize("hasRole('ADMIN')") -> Para el futuro cuando halla token JWT :)
     public ResponseEntity<CouponDto> createCoupon(@RequestBody CouponModel coupon) {
-        CouponDto createdCoupon = adminService.addCoupon(coupon);
+        CouponDto createdCoupon = couponService.addCoupon(coupon);
         return new ResponseEntity<>(createdCoupon, HttpStatus.CREATED);
     }
 }

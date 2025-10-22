@@ -6,14 +6,12 @@ import org.springframework.stereotype.Service;
 import com.logistic.reeasy.demo.coupons.iface.AdminDAO;
 import com.logistic.reeasy.demo.coupons.models.CouponModel;
 
-import java.time.LocalDate;
-
 @Service
-public class AdminService{
+public class CouponService {
 
     private final AdminDAO adminDAO;
 
-    public AdminService(AdminDAO adminDAO) {
+    public CouponService(AdminDAO adminDAO) {
         this.adminDAO = adminDAO;
     }
 
