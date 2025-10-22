@@ -1,14 +1,12 @@
 package com.logistic.reeasy.demo.common.exception;
 
-import com.logistic.reeasy.demo.common.exception.custom.GoogleApiServiceException;
-import com.logistic.reeasy.demo.common.exception.custom.InvalidApiKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import com.logistic.reeasy.demo.common.exception.custom.PlasticBottleNotDetected;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import tools.jackson.databind.exc.InvalidFormatException;
 
 
 @ControllerAdvice
@@ -27,6 +25,23 @@ public class GlobalExceptionHandler {
                 status.value(),
                 ex.getErrorCode(),
                 ex.getMessage()
+        );
+
+        return new ResponseEntity<>(body, status);
+    }
+
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleJsonParseException(HttpMessageNotReadableException ex) {
+
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        String ERROR_CODE = "JSON-001";
+        String message = "JSON Format not valid";
+
+        ErrorResponse body = new ErrorResponse(
+                status.value(),
+                ERROR_CODE,
+                message
         );
 
         return new ResponseEntity<>(body, status);
