@@ -49,7 +49,7 @@ public class RecyclingService {
             );
 
             try{
-                scanDAOImpl.insert(scanTableModel, "Scans");
+                scanDAOImpl.insert(scanTableModel);
             }
             catch(Exception e){
                 // TODO: Manejar errores SQL

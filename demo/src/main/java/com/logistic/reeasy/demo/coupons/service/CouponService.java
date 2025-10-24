@@ -1,23 +1,20 @@
 package com.logistic.reeasy.demo.coupons.service;
 
-import com.logistic.reeasy.demo.common.exception.custom.InvalidCouponFormatException;
 import com.logistic.reeasy.demo.coupons.dto.CouponDto;
 import com.logistic.reeasy.demo.coupons.validator.CouponValidator;
 import org.springframework.stereotype.Service;
 
-import com.logistic.reeasy.demo.coupons.iface.AdminDAO;
+import com.logistic.reeasy.demo.coupons.iface.iCouponDAO;
 import com.logistic.reeasy.demo.coupons.models.CouponModel;
-
-import java.time.LocalDate;
 
 @Service
 public class CouponService {
 
-    private final AdminDAO adminDAO;
+    private final iCouponDAO iCouponDAO;
     private final CouponValidator couponValidator;
 
-    public CouponService(AdminDAO adminDAO, CouponValidator couponValidator) {
-        this.adminDAO = adminDAO;
+    public CouponService(iCouponDAO iCouponDAO, CouponValidator couponValidator) {
+        this.iCouponDAO = iCouponDAO;
         this.couponValidator = couponValidator;
     }
 
@@ -26,7 +23,7 @@ public class CouponService {
         couponValidator.validate(coupon);
 
         try{
-            CouponModel response = adminDAO.insert(coupon, "Coupons");
+            CouponModel response = iCouponDAO.insert(coupon);
 
             return new CouponDto(
                     response.getExpiration_date(),
@@ -39,6 +36,30 @@ public class CouponService {
 
         }
         catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+
+    }
+
+    public CouponDto findCouponById(Long couponId){
+
+        try{
+            CouponModel response = iCouponDAO.findById(couponId, "coupon_id");
+
+            return new CouponDto(
+                    response.getExpiration_date(),
+                    response.getPrice(),
+                    response.getAmount(),
+                    response.getDescription(),
+                    response.getLink(),
+                    response.getImage()
+            );
+
+        }
+        catch (Exception e){
+
+            e.printStackTrace();
+
             throw new RuntimeException(e.getMessage());
         }
 
