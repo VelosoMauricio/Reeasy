@@ -4,4 +4,5 @@ import com.logistic.reeasy.demo.common.abs.InterfaceDAO;
 import com.logistic.reeasy.demo.users.models.UserModel;
 
 public interface iUserDAO extends InterfaceDAO<UserModel> {
+    public void substractPoints(Long userId, int pointsToSubstract);
 }

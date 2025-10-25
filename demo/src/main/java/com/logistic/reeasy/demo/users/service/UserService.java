@@ -1,5 +1,6 @@
 package com.logistic.reeasy.demo.users.service;
 
+import com.logistic.reeasy.demo.common.exception.BaseApiException;
 import com.logistic.reeasy.demo.users.dto.UserDto;
 import com.logistic.reeasy.demo.users.iface.iUserDAO;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,8 @@ public class UserService {
             return new UserDto(
                     response.getName() + " " + response.getLastname(),
                     response.getEmail(),
-                    response.getAddres()
+                    response.getAddress(),
+                    response.getPoints()
             );
 
         }
@@ -28,6 +30,19 @@ public class UserService {
             throw new RuntimeException(e.getMessage());
         }
 
+    }
+
+    public void substractPoints(Long userId, int pointsToSubstract){
+        try{
+            findUserById(userId);
+            userDAO.substractPoints(userId, pointsToSubstract);
+        }
+        catch (BaseApiException e){
+            throw e;
+        }
+        catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
 }

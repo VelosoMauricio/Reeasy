@@ -5,8 +5,8 @@ import com.logistic.reeasy.demo.redeem.iface.RedeemCouponDAO;
 import com.logistic.reeasy.demo.redeem.models.RedeemCouponModel;
 import org.sql2o.Sql2o;
 
-public class RedeemCouponDAOImpl extends AbstractDAO implements RedeemCouponDAO {
+public class RedeemCouponDAOImpl extends AbstractDAO<RedeemCouponModel> implements RedeemCouponDAO {
     public RedeemCouponDAOImpl(Sql2o sql2o) {
-        super(RedeemCouponModel.class,"RedeemCoupon", sql2o);
+        super(RedeemCouponModel.class,"RedeemCoupons", sql2o);
     }
 }

@@ -9,4 +9,5 @@ public class UserDto {
     private String fullname;
     private String email;
     private String address;
+    private int points;
 }

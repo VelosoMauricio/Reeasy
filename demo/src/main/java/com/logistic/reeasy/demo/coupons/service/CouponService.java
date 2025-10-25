@@ -1,5 +1,6 @@
 package com.logistic.reeasy.demo.coupons.service;
 
+import com.logistic.reeasy.demo.common.exception.BaseApiException;
 import com.logistic.reeasy.demo.coupons.dto.CouponDto;
 import com.logistic.reeasy.demo.coupons.validator.CouponValidator;
 import org.springframework.stereotype.Service;
@@ -63,5 +64,17 @@ public class CouponService {
             throw new RuntimeException(e.getMessage());
         }
 
+    }
+
+    public void substractOne(Long couponId){
+        try{
+            iCouponDAO.findById(couponId, "coupon_id");
+            iCouponDAO.redeemOne(couponId);
+        }catch (BaseApiException e){
+            throw e;
+        }
+        catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }

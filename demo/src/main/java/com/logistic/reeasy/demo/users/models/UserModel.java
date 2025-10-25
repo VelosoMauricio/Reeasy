@@ -12,5 +12,6 @@ public class UserModel {
     private String name;
     private String lastname;
     private String email;
-    private String addres;
+    private String address;
+    private int points;
 }

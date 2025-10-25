@@ -10,8 +10,8 @@ import org.sql2o.Sql2o;
 public abstract class AbstractDAO<T> implements InterfaceDAO<T>{
 
     protected final Class<T> type ;
-    private final String tableName;
-    private final Sql2o sql2o;
+    protected final String tableName;
+    protected final Sql2o sql2o;
 
     public AbstractDAO(Class<T> type, String tableName, Sql2o sql2o) {
         this.type = type;
