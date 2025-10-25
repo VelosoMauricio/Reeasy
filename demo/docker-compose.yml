@@ -28,7 +28,7 @@ services:
       - "8090:8080"
 
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/${name}?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/${name}?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8
       SPRING_DATASOURCE_USERNAME: ${user}
       SPRING_DATASOURCE_PASSWORD: ${password}
     
