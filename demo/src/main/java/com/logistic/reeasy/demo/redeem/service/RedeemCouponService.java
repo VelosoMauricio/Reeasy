@@ -50,8 +50,8 @@ public class RedeemCouponService {
 
             RedeemCouponModel cInsert =
                 new RedeemCouponModel(
-                    userId,
                     couponId,
+                    userId,
                     new Timestamp(System.currentTimeMillis())
                 );
 
