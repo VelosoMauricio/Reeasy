@@ -136,8 +136,8 @@ DROP TABLE IF EXISTS `RedeemCoupons` ;
 CREATE TABLE IF NOT EXISTS `RedeemCoupons` (
   `coupon_id` INT NOT NULL,
   `user_id` INT NOT NULL,
-  `timestamp` TIMESTAMP NULL,
-  PRIMARY KEY (`coupon_id`, `user_id`),
+  `timestamp` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`coupon_id`, `user_id`, `timestamp`),
   INDEX `fk_Coupons_has_Users_Users1_idx` (`user_id` ASC) VISIBLE,
   INDEX `fk_Coupons_has_Users_Coupons1_idx` (`coupon_id` ASC) VISIBLE,
   CONSTRAINT `fk_Coupons_has_Users_Coupons1`
