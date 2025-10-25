@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS `Users` (
   `name` VARCHAR(45) NULL,
   `lastname` VARCHAR(45) NULL,
   `email` VARCHAR(45) NULL,
-  `addres` VARCHAR(45) NULL,
+  `address` VARCHAR(45) NULL,
+  `points` INT NULL,
   PRIMARY KEY (`user_id`))
 ENGINE = InnoDB;
 
@@ -156,11 +157,11 @@ ENGINE = InnoDB;
 
 -- INSERTS DE PRUEBA
 
-INSERT INTO Users (user_id, name, lastname, email, addres)
+INSERT INTO Users (user_id, name, lastname, email, address, points)
 VALUES
-(1, 'Juan', 'Pérez', 'juan.perez@example.com', 'Calle Falsa 123'),
-(2, 'Ana', 'Gómez', 'ana.gomez@example.com', 'Av. Siempreviva 742'),
-(3, 'Luis', 'Martínez', 'luis.martinez@example.com', 'San Martín 456');
+(1, 'Juan', 'Pérez', 'juan.perez@example.com', 'Calle Falsa 123', 200),
+(2, 'Ana', 'Gómez', 'ana.gomez@example.com', 'Av. Siempreviva 742', 10),
+(3, 'Luis', 'Martínez', 'luis.martinez@example.com', 'San Martín 456', 34000);
 
 -- Roles
 INSERT INTO Roles (rol_id, rol_name)
