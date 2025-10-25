@@ -12,6 +12,7 @@ import com.logistic.reeasy.demo.redeem.validator.RedeemValidator;
 import com.logistic.reeasy.demo.users.dto.UserDto;
 import com.logistic.reeasy.demo.users.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 
@@ -30,6 +31,7 @@ public class RedeemCouponService {
         this.redeemValidator = redeemValidator;
     }
 
+    @Transactional
     public RedeemCouponDto redeemCoupon(Long userId, Long couponId) {
 
         CouponDto coupon;
