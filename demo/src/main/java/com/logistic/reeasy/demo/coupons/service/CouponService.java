@@ -27,6 +27,7 @@ public class CouponService {
             CouponModel response = iCouponDAO.insert(coupon);
 
             return new CouponDto(
+                    response.getCoupon_id(),
                     response.getExpiration_date(),
                     response.getPrice(),
                     response.getAmount(),
@@ -48,6 +49,7 @@ public class CouponService {
             CouponModel response = iCouponDAO.findById(couponId, "coupon_id");
 
             return new CouponDto(
+                    response.getCoupon_id(),
                     response.getExpiration_date(),
                     response.getPrice(),
                     response.getAmount(),

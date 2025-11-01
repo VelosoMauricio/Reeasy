@@ -19,6 +19,7 @@ public class UserService {
             var response = userDAO.findById(userId, "user_id");
 
             return new UserDto(
+                    response.getUser_id(),
                     response.getName() + " " + response.getLastname(),
                     response.getEmail(),
                     response.getAddress(),
