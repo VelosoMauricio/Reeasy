@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.logistic.reeasy.demo.common.exception.custom.GoogleApiServiceException;
 import com.logistic.reeasy.demo.common.exception.custom.InvalidApiKeyException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +20,7 @@ import com.logistic.reeasy.demo.scan.models.ScanResultWrapper;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
+@Slf4j
 @Service
 public class ImageAnalyzerService {
 
@@ -41,11 +43,11 @@ public class ImageAnalyzerService {
 
     public List<ScanBottleDetail> scanImage(String base64Image) {
         try {
-
             String prompt = buildPrompt();
 
             String body = buildRequestBody(prompt, base64Image);
 
+            log.info("Starting image analysis using Gemini API");
             // Llamada a la API
             JsonNode response = callGeminiApi(body);
 
@@ -53,6 +55,8 @@ public class ImageAnalyzerService {
             String jsonResponse = extractJsonFromResponse(response);
 
             ScanResultWrapper wrapper = mapResponseToScanResult(jsonResponse);
+
+            log.info("Image analysis completed successfully");
 
             return wrapper.getDetails();
 
@@ -76,7 +80,7 @@ public class ImageAnalyzerService {
 
         // Nos fijamos que haya algo
         if (candidateNode.isMissingNode() || candidateNode.asString().isEmpty()) {
-            throw new RuntimeException("Respuesta inesperada de Gemini: " + response.toString());
+            throw new RuntimeException("Inespered response: " + response.toString());
         }
 
         // Limpiamos el texto para quedarnos solo con el JSON. Limpia los '''' fences
@@ -136,8 +140,10 @@ public class ImageAnalyzerService {
     private void handleBadRequest(HttpClientErrorException.BadRequest e) {
         String errorBody = e.getResponseBodyAsString();
         if (errorBody != null && errorBody.contains("API_KEY_INVALID")) {
+            log.error("Invalid API Key provided for Gemini API");
             throw new InvalidApiKeyException("INVALID API KEY");
         } else {
+            log.error("Bad request to Gemini API: {}", errorBody);
             throw new GoogleApiServiceException("Gemini API returned bad request", e);
         }
     }

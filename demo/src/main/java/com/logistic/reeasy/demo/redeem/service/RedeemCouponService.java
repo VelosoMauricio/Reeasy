@@ -9,17 +9,15 @@ import com.logistic.reeasy.demo.redeem.models.RedeemCouponModel;
 import com.logistic.reeasy.demo.redeem.validator.RedeemValidator;
 import com.logistic.reeasy.demo.users.dto.UserDto;
 import com.logistic.reeasy.demo.users.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 
+@Slf4j
 @Service
 public class RedeemCouponService {
-
-    private static final Logger log = LoggerFactory.getLogger(RedeemCouponService.class);
 
     private final CouponService couponService;
     private final UserService userService;

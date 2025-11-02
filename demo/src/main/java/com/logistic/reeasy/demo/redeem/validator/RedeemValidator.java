@@ -4,15 +4,14 @@ import com.logistic.reeasy.demo.common.exception.custom.InvalidExchangeException
 import com.logistic.reeasy.demo.coupons.dto.CouponDto;
 import com.logistic.reeasy.demo.redeem.service.RedeemCouponService;
 import com.logistic.reeasy.demo.users.dto.UserDto;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 
+@Slf4j
 public class RedeemValidator {
-
-    private static final Logger log = LoggerFactory.getLogger(RedeemValidator.class);
-
     public void validateExchange(UserDto user, CouponDto couponDto) {
 
         if(user.getPoints() < couponDto.getPrice()){

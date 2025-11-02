@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import com.logistic.reeasy.demo.scan.models.ScanTableModel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import com.logistic.reeasy.demo.common.exception.custom.PlasticBottleNotDetected;
@@ -12,6 +13,7 @@ import com.logistic.reeasy.demo.scan.dto.ScanDto;
 import com.logistic.reeasy.demo.scan.iface.ScanDAO;
 import com.logistic.reeasy.demo.scan.models.ScanBottleDetail;
 
+@Slf4j
 @Service
 public class RecyclingService {
     private final ImageAnalyzerService imageAnalyzerService;
@@ -27,7 +29,8 @@ public class RecyclingService {
         List<ScanBottleDetail> detailsBottlesList = imageAnalyzerService.scanImage(image);
 
         if(detailsBottlesList == null || detailsBottlesList.isEmpty()) {
-          throw new PlasticBottleNotDetected("The image does not contain recyclable plastic bottles");
+            log.error("Plastic bottles not detected in the image provided for user id {}", id);
+            throw new PlasticBottleNotDetected("The image does not contain recyclable plastic bottles");
         }
 
         String pureBase64 = image;
@@ -53,7 +56,7 @@ public class RecyclingService {
             }
             catch(Exception e){
                 // TODO: Manejar errores SQL
-
+                log.error("Error saving scan for user id {}: ", id, e);
                 throw new RuntimeException("It happened an error on save scan", e);
             }
         });
