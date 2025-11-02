@@ -25,14 +25,17 @@
     </appender>
 
     <logger name="org.springframework" level="WARN" />
-
     <logger name="org.springframework.web" level="INFO" />
-
-    <logger name="com.zaxxer.hikari" level="WARN" />
-
+    <logger name="com.zaxxer.hikari" level="WARN" />s
     <logger name="org.apache.catalina" level="WARN" />
 
     <logger name="com.logistic.reeasy.demo.redeem.service" level="INFO" />
+    <logger name="com.logistic.reeasy.demo.coupons.service" level="INFO" />
+    <logger name="com.logistic.reeasy.demo.scan.service" level="INFO" />
+    <logger name="com.logistic.reeasy.demo.users.service" level="INFO" />
+
+    <logger name="com.logistic.reeasy.demo.coupons.validator" level="WARN" />
+    <logger name="com.logistic.reeasy.demo.redeem.validator" level="WARN" />
 
     <root level="WARN">
         <appender-ref ref="CONSOLE" />
