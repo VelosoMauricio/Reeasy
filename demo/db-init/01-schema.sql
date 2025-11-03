@@ -152,7 +152,38 @@ CREATE TABLE IF NOT EXISTS `RedeemCoupons` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `Contexts`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `Contexts` ;
 
+CREATE TABLE IF NOT EXISTS `Contexts` (
+  `context` VARCHAR(512) NULL,
+  `user_id` INT NOT NULL,
+  PRIMARY KEY (`user_id`),
+  CONSTRAINT `fk_Contexts_Users1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `Users` (`user_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `Messages`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `Messages` ;
+
+CREATE TABLE IF NOT EXISTS `Messages` (
+  `messages` VARCHAR(512) NOT NULL,
+  `es_chat` TINYINT NOT NULL,
+  `user_id` INT NOT NULL,
+  PRIMARY KEY (`user_id`),
+  CONSTRAINT `fk_Messages_Users1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `Users` (`user_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 
 -- INSERTS DE PRUEBA
