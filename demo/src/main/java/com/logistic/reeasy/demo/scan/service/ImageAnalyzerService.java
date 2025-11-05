@@ -17,8 +17,8 @@ import org.springframework.web.client.RestTemplate;
 import com.logistic.reeasy.demo.scan.models.ScanBottleDetail;
 import com.logistic.reeasy.demo.scan.models.ScanResultWrapper;
 
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Slf4j
 @Service
@@ -79,13 +79,13 @@ public class ImageAnalyzerService {
         JsonNode candidateNode = response.at("/candidates/0/content/parts/0/text");
 
         // Nos fijamos que haya algo
-        if (candidateNode.isMissingNode() || candidateNode.asString().isEmpty()) {
+        if (candidateNode.isMissingNode() || candidateNode.asText().isEmpty()) {
             throw new RuntimeException("Inespered response: " + response.toString());
         }
 
         // Limpiamos el texto para quedarnos solo con el JSON. Limpia los '''' fences
         // del MARKDOWN
-        return candidateNode.asString()
+        return candidateNode.asText()
                 .replaceAll("```json", "")
                 .replaceAll("```", "")
                 .trim();
@@ -119,7 +119,7 @@ public class ImageAnalyzerService {
     }
 
     // Armamos el JSON que espera la API de Gemini
-    private String buildRequestBody(String prompt, String base64Image) {
+    private String buildRequestBody(String prompt, String base64Image) throws Exception {
 
         // Construimos el bloque del prompt
         Map<String, Object> textPart = Map.of("text", prompt);

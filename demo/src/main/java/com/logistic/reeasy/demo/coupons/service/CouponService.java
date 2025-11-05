@@ -32,6 +32,8 @@ public class CouponService {
         try{
             CouponModel response = iCouponDAO.insert(coupon);
 
+            System.out.println(response);
+
             log.info("Coupon added successfully with id: " + response.getCoupon_id());
 
             return new CouponDto(
