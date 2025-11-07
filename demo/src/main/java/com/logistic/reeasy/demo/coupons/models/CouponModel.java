@@ -2,6 +2,7 @@ package com.logistic.reeasy.demo.coupons.models;
 
 import java.time.LocalDate;
 
+import com.logistic.reeasy.demo.common.annotations.Autoincrement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,7 @@ public class CouponModel{
     public String link;
     public String image;
     public String enterprise_cuit;
+
+    @Autoincrement
     public Long coupon_id;
 }

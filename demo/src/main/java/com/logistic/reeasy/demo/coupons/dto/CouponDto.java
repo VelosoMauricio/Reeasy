@@ -8,6 +8,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 public class CouponDto {
+    private Long id;
     private LocalDate expiration_date;
     private int price;
     private int amount;

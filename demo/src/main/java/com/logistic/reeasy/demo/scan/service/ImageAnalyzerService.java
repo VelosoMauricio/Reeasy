@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.logistic.reeasy.demo.common.exception.custom.GoogleApiServiceException;
 import com.logistic.reeasy.demo.common.exception.custom.InvalidApiKeyException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -16,10 +17,11 @@ import org.springframework.web.client.RestTemplate;
 import com.logistic.reeasy.demo.scan.models.RequestModel;
 import com.logistic.reeasy.demo.scan.models.ScanBottleDetail;
 import com.logistic.reeasy.demo.scan.models.ScanResultWrapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
-
+@Slf4j
 @Service
 public class ImageAnalyzerService {
 
@@ -45,7 +47,6 @@ public class ImageAnalyzerService {
 
     public List<ScanBottleDetail> scanImage(String base64Image) {
         try {
-
             String prompt = buildPrompt();
 
             String body = buildRequestBody(prompt, base64Image);
@@ -55,11 +56,17 @@ public class ImageAnalyzerService {
             
             // Lamada a la API propia
             JsonNode response = callApi(body);
-
+            /* 
+            log.info("Starting image analysis using Gemini API");
+            // Llamada a la API
+            JsonNode response = callGeminiApi(body);
+            */
             // Extraer el JSON de la respuesta
             String jsonResponse = extractJsonFromResponse(response);
 
             ScanResultWrapper wrapper = mapResponseToScanResult(jsonResponse);
+
+            log.info("Image analysis completed successfully");
 
             return wrapper.getDetails();
 
@@ -81,12 +88,12 @@ public class ImageAnalyzerService {
         JsonNode candidateNode = response.at("/response");
 
         // Nos fijamos que haya algo
-        if (candidateNode.isMissingNode() || candidateNode.asString().isEmpty())
+        if (candidateNode.isMissingNode() || candidateNode.asText().isEmpty())
             throw new RuntimeException("Respuesta inesperada de la API custom: No se encontró el campo '/response' o está vacío. Respuesta recibida: " + response.toString());
 
         // Limpiamos el texto para quedarnos solo con el JSON. Limpia los '''' fences
         // del MARKDOWN
-        return candidateNode.asString()
+        return candidateNode.asText()
                 .replaceAll("```json", "")
                 .replaceAll("```", "")
                 .trim();
@@ -144,7 +151,7 @@ public class ImageAnalyzerService {
     /*
     /////Fragmento para armar el JSON que requiere la api de google, no la usamos ya que vamos a necesitar un JSON distinto para nuestr api
     // Armamos el JSON que espera la API de Gemini
-    private String buildRequestBody(String prompt, String base64Image) {
+    private String buildRequestBody(String prompt, String base64Image) throws Exception {
 
         // Construimos el bloque del prompt
         Map<String, Object> textPart = Map.of("text", prompt);
@@ -163,8 +170,9 @@ public class ImageAnalyzerService {
     }
         
     */
+
     // Armamos el JSON para la api propia
-    private String buildRequestBody(String prompt, String base64Image) {
+    private String buildRequestBody(String prompt, String base64Image) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
 
         RequestModel request = new RequestModel();
@@ -181,8 +189,10 @@ public class ImageAnalyzerService {
     private void handleBadRequest(HttpClientErrorException.BadRequest e) {
         String errorBody = e.getResponseBodyAsString();
         if (errorBody != null && errorBody.contains("API_KEY_INVALID")) {
+            log.error("Invalid API Key provided for Gemini API");
             throw new InvalidApiKeyException("INVALID API KEY");
         } else {
+            log.error("Bad request to Gemini API: {}", errorBody);
             throw new GoogleApiServiceException("Gemini API returned bad request", e);
         }
     }
