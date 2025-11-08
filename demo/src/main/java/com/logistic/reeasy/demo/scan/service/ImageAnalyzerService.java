@@ -29,13 +29,13 @@ public class ImageAnalyzerService {
     private final ObjectMapper objectMapper;
     //private final String GEMINI_URL;
     //private final String GEMINI_API_KEY;
-    private final String CUSTOM_API_URL; //nueva url las anteriores quedan en desuso
+    private final String CUSTOM_API_URL; //nueva url las anteriores quedan en desuso por ahora
 
     public ImageAnalyzerService(
             ObjectMapper objectMapper,
             //@Value("${gemini.api.url}") String geminiUrl,
             //@Value("${gemini.api.key}") String geminiApiKey
-            @Value("${gemini.api.custom}") String customUrl
+            @Value("${spring.ai.ollama.base-url}") String customUrl
     ) {
         this.restTemplate = new RestTemplate();
         this.objectMapper = objectMapper;
@@ -109,7 +109,7 @@ public class ImageAnalyzerService {
             HttpEntity<String> request = new HttpEntity<>(body, headers);
 
             // Haces el POST
-            return restTemplate.postForObject(CUSTOM_API_URL, request, JsonNode.class);
+            return restTemplate.postForObject(CUSTOM_API_URL + "/api/generate", request, JsonNode.class);
 
         } catch (HttpClientErrorException e) {
             // Esto es útil para debuggear si tu API local falla
@@ -178,7 +178,9 @@ public class ImageAnalyzerService {
         RequestModel request = new RequestModel();
         request.setModel("gemma3:12b");
         request.setPrompt(prompt);
-        request.setImages(base64Image);
+        request.setImages(List.<String>of(base64Image));
+
+        request.setStream(false);
 
         System.out.println(request);
 

@@ -1,12 +1,14 @@
 package com.logistic.reeasy.demo.scan.models;
 import lombok.Data;
+import java.util.List;
 
 @Data
 public class RequestModel {
     private String model;
     private String prompt;
-    private String images;
-    private String stream = "false";
+    private List<String> images; //
+    //@JsonProperty("stream")
+    private boolean stream; //
 
 }
 
