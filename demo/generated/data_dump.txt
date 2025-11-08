@@ -1,0 +1,36 @@
+=== Tabla: Bottles ===
+{plastic_type=PEAD, bottle_id=1}
+{plastic_type=PEBD, bottle_id=2}
+{plastic_type=PET, bottle_id=3}
+
+=== Tabla: Contexts ===
+
+=== Tabla: Coupons ===
+{image=[B@7c6e8ff0, amount=44, coupon_id=1, price=100, link=http://example.com/coupon1, description=Descuento en supermercado, enterprise_cuit=30-12345678-9, expiration_date=2025-12-31}
+{image=[B@68c682c8, amount=30, coupon_id=2, price=200, link=http://example.com/coupon2, description=2x1 en cine, enterprise_cuit=30-98765432-1, expiration_date=2025-11-30}
+{image=[B@3ea94f9d, amount=2, coupon_id=3, price=500, link=https://www.tuempresa.com/oferta/1, description=Descuento especial en productos seleccionados., enterprise_cuit=30-12345678-9, expiration_date=2025-12-31}
+{image=[B@23e03b4a, amount=2, coupon_id=4, price=500, link=https://www.tuempresa.com/oferta/1, description=Descuento especial en productos seleccionados., enterprise_cuit=30-12345678-9, expiration_date=2025-12-31}
+{image=[B@2bf931c9, amount=2, coupon_id=5, price=500, link=https://www.tuempresa.com/oferta/1, description=Descuento especial en productos NO seleccionados., enterprise_cuit=30-12345678-9, expiration_date=2025-12-31}
+{image=[B@777536bc, amount=2, coupon_id=6, price=500, link=https://www.tuempresa.com/oferta/1, description=Descuento especial en productos NO seleccionados., enterprise_cuit=30-12345678-9, expiration_date=2025-12-31}
+{image=[B@3545a68, amount=2, coupon_id=7, price=500, link=https://www.tuempresa.com/oferta/1, description=Descuento especial en productos NO seleccionados., enterprise_cuit=30-12345678-9, expiration_date=2025-12-31}
+{image=[B@21cc0b23, amount=2, coupon_id=8, price=500, link=https://www.tuempresa.com/oferta/1, description=Descuento especial en productos NO seleccionados., enterprise_cuit=30-12345678-9, expiration_date=2025-12-31}
+{image=[B@43d911aa, amount=2, coupon_id=9, price=500, link=https://www.tuempresa.com/oferta/1, description=Descuento especial en productos NO seleccionados., enterprise_cuit=30-12345678-9, expiration_date=2025-12-31}
+{image=[B@1d471fbb, amount=2, coupon_id=10, price=500, link=https://www.tuempresa.com/oferta/1, description=Descuento especial en productos NO seleccionados., enterprise_cuit=30-12345678-9, expiration_date=2025-12-31}
+
+=== Tabla: RedeemCoupons ===
+{coupon_id=1, user_id=1, timestamp=2025-11-05 16:27:05.0}
+{coupon_id=1, user_id=1, timestamp=2025-11-05 16:27:06.0}
+{coupon_id=1, user_id=3, timestamp=2025-11-04 08:04:23.0}
+{coupon_id=1, user_id=3, timestamp=2025-11-05 16:26:20.0}
+{coupon_id=1, user_id=3, timestamp=2025-11-05 16:26:54.0}
+
+=== Tabla: Roles ===
+{rol_name=Admin, rol_id=1}
+{rol_name=User, rol_id=2}
+{rol_name=Collector, rol_id=3}
+
+=== Tabla: Users ===
+{address=Calle Falsa 123, user_id=1, name=Juan, email=juan.perez@example.com, lastname=PÃ©rez, points=0}
+{address=Av. Siempreviva 742, user_id=2, name=Ana, email=ana.gomez@example.com, lastname=GÃ³mez, points=10}
+{address=San MartÃ­n 456, user_id=3, name=Luis, email=luis.martinez@example.com, lastname=MartÃ­nez, points=33600}
+
