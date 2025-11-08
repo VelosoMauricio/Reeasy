@@ -14,9 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.logistic.reeasy.demo.scan.models.RequestModel;
 import com.logistic.reeasy.demo.scan.models.ScanBottleDetail;
 import com.logistic.reeasy.demo.scan.models.ScanResultWrapper;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -26,19 +27,22 @@ public class ImageAnalyzerService {
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
-    private final String GEMINI_URL;
-    private final String GEMINI_API_KEY;
+    //private final String GEMINI_URL;
+    //private final String GEMINI_API_KEY;
+    private final String CUSTOM_API_URL; //nueva url las anteriores quedan en desuso por ahora
 
     public ImageAnalyzerService(
             ObjectMapper objectMapper,
-            @Value("${gemini.api.url}") String geminiUrl,
-            @Value("${gemini.api.key}") String geminiApiKey
+            //@Value("${gemini.api.url}") String geminiUrl,
+            //@Value("${gemini.api.key}") String geminiApiKey
+            @Value("${spring.ai.ollama.base-url}") String customUrl
     ) {
         this.restTemplate = new RestTemplate();
         this.objectMapper = objectMapper;
 
-        this.GEMINI_URL = geminiUrl;
-        this.GEMINI_API_KEY = geminiApiKey;
+        //this.GEMINI_URL = geminiUrl;
+        //this.GEMINI_API_KEY = geminiApiKey;
+        this.CUSTOM_API_URL = customUrl;
     }
 
     public List<ScanBottleDetail> scanImage(String base64Image) {
@@ -47,10 +51,16 @@ public class ImageAnalyzerService {
 
             String body = buildRequestBody(prompt, base64Image);
 
+            // Llamada a la API Gemini
+            //JsonNode response = callGeminiApi(body);
+            
+            // Lamada a la API propia
+            JsonNode response = callApi(body);
+            /* 
             log.info("Starting image analysis using Gemini API");
             // Llamada a la API
             JsonNode response = callGeminiApi(body);
-
+            */
             // Extraer el JSON de la respuesta
             String jsonResponse = extractJsonFromResponse(response);
 
@@ -74,14 +84,12 @@ public class ImageAnalyzerService {
     }
 
     private String extractJsonFromResponse(JsonNode response) {
-        // Chusmeamos la respuesta para sacar el JSON. Basicamente navegamos dentro de
-        // la estructura que esta mas abajo y sacamos el texto
-        JsonNode candidateNode = response.at("/candidates/0/content/parts/0/text");
+        //JsonNode candidateNode = response.at("/candidates/0/content/parts/0/text"); en el nuevo apuntamos al candidato response
+        JsonNode candidateNode = response.at("/response");
 
         // Nos fijamos que haya algo
-        if (candidateNode.isMissingNode() || candidateNode.asText().isEmpty()) {
-            throw new RuntimeException("Inespered response: " + response.toString());
-        }
+        if (candidateNode.isMissingNode() || candidateNode.asText().isEmpty())
+            throw new RuntimeException("Respuesta inesperada de la API custom: No se encontró el campo '/response' o está vacío. Respuesta recibida: " + response.toString());
 
         // Limpiamos el texto para quedarnos solo con el JSON. Limpia los '''' fences
         // del MARKDOWN
@@ -91,6 +99,27 @@ public class ImageAnalyzerService {
                 .trim();
     }
 
+    private JsonNode callApi(String body){
+        
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            
+            HttpEntity<String> request = new HttpEntity<>(body, headers);
+
+            // Haces el POST
+            return restTemplate.postForObject(CUSTOM_API_URL + "/api/generate", request, JsonNode.class);
+
+        } catch (HttpClientErrorException e) {
+            // Esto es útil para debuggear si tu API local falla
+            String errorBody = e.getResponseBodyAsString();
+            System.err.println("Error llamando a la API custom: " + errorBody);
+            throw new RuntimeException("Error en la API custom: " + errorBody, e);
+        }
+    }
+
+    /* Anterior llamada a la api de google gemmini
     private JsonNode callGeminiApi(String body) {
         HttpHeaders headers = new HttpHeaders();
 
@@ -100,7 +129,7 @@ public class ImageAnalyzerService {
 
         // Le hago un POST hard a la api de Gemini
         return restTemplate.postForObject(GEMINI_URL + "?key=" + GEMINI_API_KEY, request, JsonNode.class);
-    }
+    }*/
 
     private String buildPrompt() {
         return """
@@ -118,6 +147,9 @@ public class ImageAnalyzerService {
                 """;
     }
 
+
+    /*
+    /////Fragmento para armar el JSON que requiere la api de google, no la usamos ya que vamos a necesitar un JSON distinto para nuestr api
     // Armamos el JSON que espera la API de Gemini
     private String buildRequestBody(String prompt, String base64Image) throws Exception {
 
@@ -136,6 +168,25 @@ public class ImageAnalyzerService {
 
         return objectMapper.writeValueAsString(bodyMap); // Lo pasamos a JSON
     }
+        
+    */
+
+    // Armamos el JSON para la api propia
+    private String buildRequestBody(String prompt, String base64Image) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+
+        RequestModel request = new RequestModel();
+        request.setModel("gemma3:12b");
+        request.setPrompt(prompt);
+        request.setImages(List.<String>of(base64Image));
+
+        request.setStream(false);
+
+        System.out.println(request);
+
+        return mapper.writeValueAsString(request);
+    }
+    
 
     private void handleBadRequest(HttpClientErrorException.BadRequest e) {
         String errorBody = e.getResponseBodyAsString();
@@ -147,5 +198,4 @@ public class ImageAnalyzerService {
             throw new GoogleApiServiceException("Gemini API returned bad request", e);
         }
     }
-
 }
