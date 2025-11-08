@@ -34,6 +34,8 @@
     <logger name="com.logistic.reeasy.demo.scan.service" level="INFO" />
     <logger name="com.logistic.reeasy.demo.users.service" level="INFO" />
 
+    <logger name="com.logistic.reeasy.demo.common" level="INFO" />
+
     <logger name="com.logistic.reeasy.demo.coupons.validator" level="WARN" />
     <logger name="com.logistic.reeasy.demo.redeem.validator" level="WARN" />
 

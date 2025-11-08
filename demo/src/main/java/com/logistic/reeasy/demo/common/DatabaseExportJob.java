@@ -9,17 +9,18 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class DatabaseExportJob {
     private final DatabaseExporter exporter;
-    
+
     public DatabaseExportJob(DatabaseExporter exporter){
-        this.exporter = exporter; 
+        this.exporter = exporter;
     }
 
     @Scheduled(fixedRate = 30000)
     public void exportPeriodically() {
         try {
-            exporter.exportDbToJson();
-            System.out.println("nasheee");
-            log.info("json de db actualizado");
+            log.info("Starting to generate db txt");
+            exporter.exportDbToTxt();
+            log.info("Db txt has been generated");
+
         } catch (Exception e) {
             e.printStackTrace();
         }

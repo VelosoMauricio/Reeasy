@@ -16,7 +16,7 @@ import java.util.List;
 @Slf4j
 public class ChatService {
 
-    @Value("classpath:/coupons.txt")
+    @Value("${export.file.path}")
     private Resource fileResource;
 
     VectorStore vectorStore;

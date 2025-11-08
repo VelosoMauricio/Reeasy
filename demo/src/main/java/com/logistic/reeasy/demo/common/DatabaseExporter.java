@@ -2,52 +2,68 @@ package com.logistic.reeasy.demo.common;
 
 import java.util.List;
 import java.util.Map;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.sql2o.Sql2o;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component
 public class DatabaseExporter {
 
-    //Dependencia del jackson para pasar a JSON 
-    private final ObjectMapper mapper = new ObjectMapper(); 
+    private static final Logger log = LoggerFactory.getLogger(DatabaseExporter.class);
 
-    private Sql2o sql2o;
+    private final Sql2o sql2o;
 
-    @Value("${export.file.path:data_dump.json}") 
-    private String outputPath;
+    @Value("${export.file.path}")
+    private Resource outputResource;
 
-    public DatabaseExporter(Sql2o sql2o){
-        this.sql2o = sql2o; 
+    public DatabaseExporter(Sql2o sql2o) {
+        this.sql2o = sql2o;
     }
 
-    public void exportDbToJson() throws Exception{ 
+    public void exportDbToTxt() throws Exception {
         try (var con = sql2o.open()) {
-            //lista con todos los nombres de las tablas
             List<String> tables = con.createQuery("SHOW TABLES").executeScalarList(String.class);
 
-            // mapa que tiene tabla filas
-            Map<String, Object> data = new java.util.HashMap<>();
+            tables.remove("Scans");
+            tables.remove("Enterprise");
+            tables.remove("Context");
+            tables.remove("UsersDetails");
+            tables.remove("Messages");
 
-            //metemos al json fila -> valores 
-            for (String table : tables) {
-                List<Map<String, Object>> rows = con.createQuery("SELECT * FROM " + table)
-                        .executeAndFetchTable()
-                        .asList();
-                data.put(table, rows);
-            }
-
-            File file = new File(System.getProperty("user.dir"), outputPath);
+//            File file = new File(System.getProperty("user.dir"), outputPath);
+            File file = outputResource.getFile();
 
             if (file.getParentFile() != null) {
-                file.getParentFile().mkdirs(); // crea carpeta si no existe
-                System.out.println("cree la ca");
+                file.getParentFile().mkdirs();
             }
 
-            mapper.writerWithDefaultPrettyPrinter().writeValue(file, data);
-            System.out.println("Ruta bd: " + file.getAbsolutePath());
+            try (FileWriter writer = new FileWriter(file)) {
+                for (String table : tables) {
+                    writer.write("=== Tabla: " + table + " ===\n");
+
+                    List<Map<String, Object>> rows = con.createQuery("SELECT * FROM " + table)
+                            .executeAndFetchTable()
+                            .asList();
+
+                    for (Map<String, Object> row : rows) {
+                        writer.write(row.toString() + "\n");
+                    }
+
+                    writer.write("\n");
+                }
+            }
+
+            log.info("Exporting db to: {}", file.getAbsolutePath());
+        } catch (IOException e) {
+            log.error("ERROR on export db", e);
+            throw e;
         }
     }
 }
