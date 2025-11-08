@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.stereotype.Service;
 import com.logistic.reeasy.demo.scan.iface.ImageAnalyzerService;
 import com.logistic.reeasy.demo.scan.models.ScanBottleDetail;
@@ -29,14 +30,15 @@ public class FailoverImageAnalyzerService implements ImageAnalyzerService{
     }
 
     @Override
+    @CircuitBreaker(name = "iaPrincipal", fallbackMethod = "analisisFallback")
     public List<ScanBottleDetail> scanImage(String image) {
-        // Lógica simple de fallback (idealmente usarías un Circuit Breaker)
-        try {
-            log.debug("Intentando análisis con servicio principal...");
-            return servicioFallback.scanImage(image);
-        } catch (Exception e) {
-            log.warn("Servicio principal falló: {}. Usando fallback (Gemini).", e.getMessage());
-            return servicioPrincipal.scanImage(image);
-        }
+        log.debug("Realizando análisis con servicio principal...");
+        return servicioPrincipal.scanImage(image);
+    }
+
+    private List<ScanBottleDetail> analisisFallback(String image, Throwable t) {
+        log.warn("Circuit Breaker 'iaPrincipal' activado. Usando fallback (Gemini). Error: {}", t.getMessage());
+        // Llama a tu servicio de Gemini
+        return servicioFallback.scanImage(image);
     }
 }

@@ -2,3 +2,28 @@ spring:
   docker:
     compose:
       enabled: false
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        register-health-indicator: true
+    instances:
+      iaPrincipal: # <--  Circuit Breaker principal para control de peticiones a la ia
+        # (Estado CERRADO)
+        failure-rate-threshold: 50 # %: Si el 50% de las llamadas fallan, se abre
+        sliding-window-type: COUNT_BASED # Contar las N últimas llamadas
+        sliding-window-size: 10 # Monitorea las últimas 10 llamadas
+
+        # (Estado ABIERTO)
+        wait-duration-in-open-state: 25s # Espera 10 seg. antes de re-intentar
+
+        # (Estado SEMI-ABIERTO)
+        permitted-number-of-calls-in-half-open-state: 2 # Deja pasar 2 llamadas de prueba (estoy considerando un flujo de personas importante)
+        
+        # Qué excepciones debe contar como "falla"
+        record-exceptions:
+          - java.io.IOException
+          - java.util.concurrent.TimeoutException
+          #- com.logistic.reeasy.demo.common.exception.custom.PlasticBottleNotDetected ## Esta no es necesariamente una excepcion negativa, simplemente puede ser una foto de mierda
+          # Puedes añadir tus propias excepciones personalizadas de tu IA local
