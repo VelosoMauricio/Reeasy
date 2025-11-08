@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ai.document.Document;
 
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
@@ -19,10 +20,29 @@ public class ChatService {
     @Value("${export.file.path}")
     private Resource fileResource;
 
-    VectorStore vectorStore;
+    private VectorStore vectorStore;
 
     public ChatService(VectorStore vectorStore){
         this.vectorStore = vectorStore;
+    }
+
+    @PostConstruct
+    public void loadDataOnStartup() {
+        log.info("Cargando datos en el VectorStore al iniciar la aplicación...");
+
+        TextReader textReader = new TextReader(fileResource);
+        textReader.getCustomMetadata().put("filename", "sample.txt");
+        List<Document> documentsText = textReader.get();
+
+        List<Document> documents = new TokenTextSplitter().apply(documentsText);
+
+        vectorStore.add(documents);
+        log.info("Carga de datos completa. Total de documentos: {}", documents.size());
+    }
+
+    // Método para que el controlador obtenga el VectorStore ya cargado
+    public VectorStore getVectorStore() {
+        return this.vectorStore;
     }
 
     public VectorStore loadDataInVectorStore(){
