@@ -21,12 +21,11 @@ public class AiConfig {
 
     @Bean
     public ChatClient.Builder chatClientBuilder(ChatModel chatModel) {
-        return ChatClient.builder(chatModel)
-                .defaultOptions(ChatOptions.builder().topK(500).temperature(.3).build());
+        return ChatClient.builder(chatModel);
     }
 
     @Bean
-    @SessionScope
+    @SessionScope // Proxy for each user per session
     public ChatMemory chatMemory() {
         return MessageWindowChatMemory
                 .builder()
