@@ -3,8 +3,26 @@ spring:
     compose:
       enabled: false
 
+
+resilience4j:
+  retry: # sección para reintentos
+    retryAspectOrder: 1 # Se ejecuta primero (prioridad más alta)
+    instances:
+      iaPrincipalRetry:
+        max-attempts: 3 # Número total de intentos (1 inicial + 2 reintentos)
+        wait-duration: 500ms # Espera 500ms entre cada intento 
+        retry-exceptions:  #Qué excepciones reintentar:
+          - java.io.IOException
+          - java.util.concurrent.TimeoutException
+        ignore-exceptions: # Qué excepciones NO reintentar:
+          - com.logistic.reeasy.demo.common.exception.custom.PlasticBottleNotDetected
+          # No reintentes si la imagen es mala, eso no es una falla de red
+
+
+
 resilience4j:
   circuitbreaker:
+    circuitBreakerAspectOrder: 2 # Se ejecuta después del retry
     configs:
       default:
         register-health-indicator: true

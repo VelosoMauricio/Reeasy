@@ -1,7 +1,7 @@
 === Tabla: Bottles ===
 
 === Tabla: Coupons ===
-{image=[B@3bb77373, amount=150, coupon_id=12, price=2500, link=https://tuempresa.com.ar/promo/primavera, description=20% de descuento en toda la, enterprise_cuit=30123456789, expiration_date=2026-11-30}
+{image=[B@27251e63, amount=150, coupon_id=12, price=2500, link=https://tuempresa.com.ar/promo/primavera, description=20% de descuento en toda la, enterprise_cuit=30123456789, expiration_date=2026-11-30}
 
 === Tabla: RedeemCoupons ===
 

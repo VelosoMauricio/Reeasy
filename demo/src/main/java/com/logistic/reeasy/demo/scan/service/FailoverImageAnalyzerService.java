@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+
 import org.springframework.stereotype.Service;
 import com.logistic.reeasy.demo.scan.iface.ImageAnalyzerService;
 import com.logistic.reeasy.demo.scan.models.ScanBottleDetail;
@@ -30,6 +32,7 @@ public class FailoverImageAnalyzerService implements ImageAnalyzerService{
     }
 
     @Override
+    @Retry(name = "iaPrincipalRetry") // Ejecucion prioritaria antes que el circuitbreaker
     @CircuitBreaker(name = "iaPrincipal", fallbackMethod = "analisisFallback")
     public List<ScanBottleDetail> scanImage(String image) {
         log.debug("Realizando análisis con servicio principal...");
