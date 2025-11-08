@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.logistic.reeasy.demo.scan.iface.ImageAnalyzerService;
 import com.logistic.reeasy.demo.scan.models.RequestModel;
 import com.logistic.reeasy.demo.scan.models.ScanBottleDetail;
 import com.logistic.reeasy.demo.scan.models.ScanResultWrapper;
@@ -22,8 +23,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Slf4j
-@Service
-public class ImageAnalyzerService {
+@Service("LocalAnalizer") //le doy un nombre para identificarlo esto es un atajo para: @Service @Qualifier("nombre")
+public class LocalImageAnalyzerService implements ImageAnalyzerService{
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
@@ -31,7 +32,7 @@ public class ImageAnalyzerService {
     //private final String GEMINI_API_KEY;
     private final String CUSTOM_API_URL; //nueva url las anteriores quedan en desuso por ahora
 
-    public ImageAnalyzerService(
+    public LocalImageAnalyzerService(
             ObjectMapper objectMapper,
             //@Value("${gemini.api.url}") String geminiUrl,
             //@Value("${gemini.api.key}") String geminiApiKey

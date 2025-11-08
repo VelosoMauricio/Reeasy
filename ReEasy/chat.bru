@@ -1,0 +1,28 @@
+meta {
+  name: chat
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:8090/ask?q=que cupones puedo canjear con 800 puntos??
+  body: none
+  auth: inherit
+}
+
+params:query {
+  q: que cupones puedo canjear con 800 puntos??
+}
+
+vars:pre-request {
+  ~id: 
+}
+
+vars:post-response {
+  ~q: qq
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

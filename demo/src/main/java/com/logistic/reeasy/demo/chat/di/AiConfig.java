@@ -22,7 +22,7 @@ public class AiConfig {
     @Bean
     public ChatClient.Builder chatClientBuilder(ChatModel chatModel) {
         return ChatClient.builder(chatModel)
-                .defaultOptions(ChatOptions.builder().topK(100).temperature(.3).build());
+                .defaultOptions(ChatOptions.builder().topK(500).temperature(.3).build());
     }
 
     @Bean

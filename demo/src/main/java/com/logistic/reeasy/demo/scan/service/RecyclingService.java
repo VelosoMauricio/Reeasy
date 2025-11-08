@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.logistic.reeasy.demo.common.exception.custom.PlasticBottleNotDetected;
 import com.logistic.reeasy.demo.scan.dto.ScanBottleDetailDto;
 import com.logistic.reeasy.demo.scan.dto.ScanDto;
+import com.logistic.reeasy.demo.scan.iface.ImageAnalyzerService;
 import com.logistic.reeasy.demo.scan.iface.ScanDAO;
 import com.logistic.reeasy.demo.scan.models.ScanBottleDetail;
 

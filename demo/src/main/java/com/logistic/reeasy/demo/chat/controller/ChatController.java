@@ -94,7 +94,7 @@ public class ChatController {
                     MessageChatMemoryAdvisor.builder(this.chatMemory).build(),
                     QuestionAnswerAdvisor.builder(vectorStore).build()
             ).defaultSystem(prompt)
-            .defaultOptions(ChatOptions.builder().temperature(0.3).topK(50).build())
+            .defaultOptions(ChatOptions.builder().temperature(0.3).topK(500).build())
             .build();
 
 
