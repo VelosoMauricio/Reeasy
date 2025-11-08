@@ -33,10 +33,10 @@ public class FailoverImageAnalyzerService implements ImageAnalyzerService{
         // Lógica simple de fallback (idealmente usarías un Circuit Breaker)
         try {
             log.debug("Intentando análisis con servicio principal...");
-            return servicioPrincipal.scanImage(image);
+            return servicioFallback.scanImage(image);
         } catch (Exception e) {
             log.warn("Servicio principal falló: {}. Usando fallback (Gemini).", e.getMessage());
-            return servicioFallback.scanImage(image);
+            return servicioPrincipal.scanImage(image);
         }
     }
 }
