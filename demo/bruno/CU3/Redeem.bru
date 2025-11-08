@@ -1,0 +1,22 @@
+meta {
+  name: Redeem
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8090/redeem
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "userId": 3,
+    "couponId": 1
+  }
+}
+
+settings {
+  encodeUrl: true
+}

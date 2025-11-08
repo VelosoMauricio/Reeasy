@@ -1,0 +1,15 @@
+meta {
+  name: GetAdminStatus
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:8090/admin/status
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

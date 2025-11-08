@@ -1,0 +1,15 @@
+meta {
+  name: GetRecyclingService
+  type: http
+  seq: 5
+}
+
+get {
+  url: http://localhost:8090/recycling/status
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,19 @@
+meta {
+  name: ask
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:8090/ask?q=Existe algún descuento de ropa?
+  body: none
+  auth: inherit
+}
+
+params:query {
+  q: Existe algún descuento de ropa?
+}
+
+settings {
+  encodeUrl: true
+}
