@@ -12,4 +12,5 @@ import lombok.Data;
 public class ScanDto {
   private Timestamp date;
   private List<ScanBottleDetailDto> data;
+  private String image;
 }

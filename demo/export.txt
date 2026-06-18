@@ -1,0 +1,23 @@
+=== Tabla: Bottles ===
+{plastic_type=PEAD, bottle_id=1}
+{plastic_type=PEBD, bottle_id=2}
+{plastic_type=PET, bottle_id=3}
+
+=== Tabla: Contexts ===
+
+=== Tabla: Coupons ===
+{image=[B@423a4fb1, amount=50, coupon_id=1, price=100, link=http://example.com/coupon1, description=Descuento en supermercado, enterprise_cuit=30-12345678-9, expiration_date=2025-12-31}
+{image=[B@6531bd4b, amount=30, coupon_id=2, price=200, link=http://example.com/coupon2, description=2x1 en cine, enterprise_cuit=30-98765432-1, expiration_date=2025-11-30}
+
+=== Tabla: RedeemCoupons ===
+
+=== Tabla: Roles ===
+{rol_name=Admin, rol_id=1}
+{rol_name=User, rol_id=2}
+{rol_name=Collector, rol_id=3}
+
+=== Tabla: Users ===
+{address=Calle Falsa 123, user_id=1, name=Juan, email=juan.perez@example.com, lastname=PÃ©rez, points=200}
+{address=Av. Siempreviva 742, user_id=2, name=Ana, email=ana.gomez@example.com, lastname=GÃ³mez, points=10}
+{address=San MartÃ­n 456, user_id=3, name=Luis, email=luis.martinez@example.com, lastname=MartÃ­nez, points=34000}
+

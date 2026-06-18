@@ -27,14 +27,20 @@ public class RecyclingService {
 
     public ScanDto scanImage(String image, Long id) {
         Timestamp scanTimestamp = new Timestamp(System.currentTimeMillis());
-        List<ScanBottleDetail> detailsBottlesList = imageAnalyzerService.scanImage(image);
+        com.logistic.reeasy.demo.scan.models.AnalyzedResult analyzedResult = imageAnalyzerService.scanImage(image);
+        List<ScanBottleDetail> detailsBottlesList = analyzedResult.getDetails();
 
         if(detailsBottlesList == null || detailsBottlesList.isEmpty()) {
             log.error("Plastic bottles not detected in the image provided for user id {}", id);
             throw new PlasticBottleNotDetected("The image does not contain recyclable plastic bottles");
         }
 
-        String pureBase64 = image;
+        String resultImageBase64 = analyzedResult.getImage();
+        if (resultImageBase64 == null || resultImageBase64.isEmpty()) {
+            resultImageBase64 = image;
+        }
+
+        String pureBase64 = resultImageBase64;
 
         if (pureBase64.contains(",")) {
             pureBase64 = pureBase64.split(",")[1];
@@ -67,6 +73,6 @@ public class RecyclingService {
               .map(detail2 -> new ScanBottleDetailDto(detail2.getType(), detail2.getAmount()))
               .toList();
 
-        return new ScanDto(scanTimestamp, bottleDetails);
+        return new ScanDto(scanTimestamp, bottleDetails, resultImageBase64);
     }
 }

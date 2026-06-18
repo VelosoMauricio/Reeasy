@@ -28,16 +28,8 @@
 	</scm>
 	<properties>
         <java.version>17</java.version>
-        <spring-ai.version>1.0.3</spring-ai.version>
 	</properties>
 	<dependencies>
-        <!-- Google Cloud -->
-        <dependency>
-            <groupId>com.google.cloud</groupId>
-            <artifactId>google-cloud-aiplatform</artifactId>
-            <version>3.53.0</version>
-        </dependency>
-
         <!--Resilience4j para la creacion de Circuitos Breakers-->
         
         <dependency>
@@ -88,39 +80,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- IA -->
-        <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-starter-model-ollama</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-ollama</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-advisors-vector-store</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-rag</artifactId>
-        </dependency>
-
-
     </dependencies>
-
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.ai</groupId>
-                <artifactId>spring-ai-bom</artifactId>
-                <version>${spring-ai.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
 	<build>
 		<plugins>

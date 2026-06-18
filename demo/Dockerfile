@@ -1,10 +1,19 @@
-FROM openjdk:21-jdk-slim
+FROM eclipse-temurin:21-jdk-alpine AS build
 
-ARG JAR_FILE=target/*.jar
+WORKDIR /app
+
+COPY mvnw pom.xml ./
+COPY .mvn .mvn
+RUN chmod +x mvnw && ./mvnw dependency:go-offline -q
+
+COPY src src
+RUN ./mvnw package -DskipTests -q
+
+FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /opt/app
 
-COPY ${JAR_FILE} app.jar
+COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
 
