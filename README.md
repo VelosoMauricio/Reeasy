@@ -132,7 +132,7 @@ cd demo
 
 > La conexión a BD se configura via `spring.datasource.*` en `application.yml`. Los valores por defecto apuntan a `localhost:3307` con credenciales `test`/`test`.
 
-#### 3. Servicio Frontend (Web / React+Vite)
+#### 3. Servicio Frontend (Web / React+Vite) (¡DESCONTINUADO!)
 
 Interfaz de usuario del escáner web.
 
